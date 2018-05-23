@@ -1,0 +1,125 @@
+
+<div class="heading-buttons">
+	<h3 class="glyphicons display"><i></i> Dashboard</h3>
+	
+	<div class="clearfix" style="clear: both;"></div>
+</div>
+<div class="separator"></div>
+
+<div class="menubar">
+	<ul>
+		<li><a href="/app/proefdruk/admin/proefdruk/newproefdruk">Nieuwe proefdruk aanmaken</a></li>
+	</ul>
+</div>
+
+<div class="innerLR" >
+	<div class="row-fluid">
+		
+			
+		<div class="span8">
+			<div class="row-fluid">
+								<div class="span4">
+					<a href="/app/proefdruk/admin/proefdruk/list?filter=3" class="widget-stats">
+						<span class="glyphicons user_add"><i></i></span>
+						<span class="txt"><strong><?php echo count($proofs);?></strong>Onverzonden</span>
+						<div class="clearfix"></div>
+					</a>
+				</div>
+								<div class="span4">
+					<a href="/app/proefdruk/admin/proefdruk/list?filter=0" class="widget-stats">
+						<span class="glyphicons user_add"><i></i></span>
+						<span class="txt"><strong><?php $teller = 0;foreach($pending as $values) {
+							if($values->proof_senddate!='0000-00-00 00:00:00' && $values->proof_status==0) {
+								$teller++;
+							}
+						}
+						echo $teller;
+						?> </strong>Geen reactie</span>
+						<div class="clearfix"></div>
+					</a>
+				</div>
+								<div class="span4">
+					<a href="/app/proefdruk/admin/proefdruk/list" class="widget-stats">
+						<span class="glyphicons user_add"><i></i></span>
+						<span class="txt"><strong><?php echo count($all);?></strong>Totaal proefdrukken</span>
+						<div class="clearfix"></div>
+					</a>
+				</div>
+							</div>
+		</div>
+	</div>
+</div>
+
+	
+	
+
+<div class="separator"></div>
+
+<ul class="breadcrumb">
+<li> <a href="/app/proefdruk/admin/proefdruk/list?filter=3">  Aantal onverzonden  ( <?php echo count($proofs);?> ) </a></li>
+<li class="divider"></li>
+<li> <a href="/app/proefdruk/admin/proefdruk/list?filter=0">  Aantal niet gereageerd  ( <?php echo count($pending);?> ) </a></li>
+</ul>
+
+<div class="innerLR">
+
+			<form method="post" name="reminder" > 
+			<table class="dynamicTable table  table-bordered table-condensed" >
+				<thead>
+					<tr>
+						<th>Productnummer</th>
+						<th>Klant naam</th>
+						<th>Klant Email</th>
+						<th>Proefdruk verzenddatum.</th>
+						<th>Proefdrukstatus</th>
+						<th>Versturen</th>
+						<th>Actie</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($proofs as $proof): ?>
+					<tr class="gradeX">
+						<td class="center"><a href="/app/proefdruk//admin/proefdruk/proofdetail/<?php echo $proof->proof_id;?>"> <?php echo $proof->proof_number;?> </a></td>
+						<td class="center"><?php echo $proof->proof_customer_name;?> </td>
+						<td class="center"><?php echo $proof->proof_customer_email;?></td>
+						<td class="center"><?php echo $proof->proof_senddate;?></td>
+						<td class="center">
+							<?php  switch($proof->proof_status) {
+													case 0:
+													echo "Pending";
+													break;
+													case 1 : ?>
+													<b style="color:red"> Afgewezen </b>
+												<?php 	break;
+													case 2:  ?>
+													<b style="color:green"> Goedgekeurd </b> 
+													<?php break;
+												}?></td>
+						<td class="center">
+							<a href="javascript:void(0);" onclick="confirmation('Weet je het zeker?','/app/proefdruk/admin/proefdruk/sendproof/<?php echo $proof->proof_id; ?>');">Versturen</a>
+</td>
+						<td class="center">
+						<a class="btn-action glyphicons pencil btn-success" href="/app/proefdruk//admin/proefdruk/newproefdruk/<?php echo $proof->proof_id;?>">
+						<i></i>
+					
+						</a>
+						
+						<a class="btn-action glyphicons remove_2 btn-danger"" href="javascript:confirmation('Weet je het zeker?','/app/proefdruk/admin/proefdruk/list/<?php echo $proof->proof_id; ?>')">
+						<i></i>
+						</a>
+						</td>
+
+						</tr>
+					<?php endforeach;?>
+					<BR>
+				
+					</form>
+					
+		
+					
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<br/>	

@@ -1,0 +1,267 @@
+<div class="innerLR">
+<p>
+  </p>
+  <h3 class="glyphicons sort"  style="margin-left:13px;">
+<i></i>
+PROEFDRUK <?php echo $proefdruk->proof_number;?>
+</h3>
+<BR>
+<a class="glyphicons no-js print" href="/app/proefdruk/admin/proefdruk/print/<?php echo $proefdruk->proof_id;?>" style="margin-left:13px;" target="_blank">
+<i></i>
+Afdrukken
+</a>
+<a class="glyphicons no-js delete" href="/app/proefdruk/admin/proefdruk/disablereminder/<?php echo $proefdruk->proof_id;?>" style="margin-left:13px;">
+<i></i>
+Reminder uitschakelen
+</a>
+
+
+<BR><BR>
+
+<table border="1" width="1200" cellspacing="0" cellpadding="2" style="font-family:Arial,Calibri; font-size: 12px; margin-left:10px;">
+	<tr>
+    	<th align="left" colspan="2" style="padding:3px; background:#CCCCCC;">Klant gegevens</th>
+    </tr>
+  <tr>
+    <td align="left">Klant :</td>
+    <td align="left"> <?php echo $proefdruk->proof_customer_name;?></td>
+  </tr>
+  <tr>
+    <td align="left" >Email:</td>
+    <td align="left"><?php echo $proefdruk->proof_customer_email;?></td>
+  </tr>
+  <tr>
+    <td align="left">Proefdruk verzonden:</td>
+    <td align="left"><?php echo $proefdruk->proof_senddate;?></td>
+  </tr>
+  <tr>
+    <td>Herinnering na 3 werkdagen:</td>
+    <td><?php  if($proefdruk->proof_autoremind==1) { echo "Ja";} else { echo "Nee";}?></td>
+  </tr>
+  <tr>
+    <td>1ste Herinnering :</td>
+    <td><?php 
+    
+    if($proefdruk->remind_date_1!='0000-00-00 00:00:00') {
+    	echo date("d-m-Y H:i:s",strtotime($proefdruk->remind_date_1));
+    } ?></td>
+  </tr>
+  <tr>
+   <td>2de Herinnering :</td>
+    <td><?php 
+    
+    if($proefdruk->remind_date_2!='0000-00-00 00:00:00') {
+    	echo date("d-m-Y H:i:s",strtotime($proefdruk->remind_date_2));
+    } 
+    
+    ?></td>
+  </tr>
+  <tr>
+     <td>3de Herinnering :</td>
+    <td><?php 
+    	if($proefdruk->remind_date_3!='0000-00-00 00:00:00') {
+    	echo date("d-m-Y H:i:s",strtotime($proefdruk->remind_date_3));
+    } 
+    	?></td>
+  </tr>
+  <tr>
+    <td>Spoedorder :</td>
+    <td><?php  if($proefdruk->proof_rushorder==1) { echo "Ja";} else { echo "Nee";}?></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+	<tr>
+    	<th align="left" colspan="2" style="padding:3px; background:#CCCCCC;">Proof Data</th>
+    </tr>
+  <tr>
+    <td>Akkoord-Afgekeurd:</td>
+    <td><?php 
+    switch($proefdruk->proof_status) {
+		case 0:
+			echo "Pending";
+		break;
+		case 1:
+			echo "Afgekeurd";
+		break;
+		case 2:
+			echo "Goedgekeurd";
+		break;
+    }
+	
+	
+	?></td>
+  </tr>
+  <?php
+  if($proefdruk->proof_status==1): ?>
+  <tr>
+    <td>Verzonden bestanden: </td>
+    <td>
+    	<?php if(count($uploadedfiles)==0) {
+    		echo "Geen bestanden meegestuurd";
+    	} else {
+    		foreach($uploadedfiles as $files) {
+    			echo "<a href=\"/app/proefdruk/files/customer/".$files->filename."\"> ". $files->filename."</a><BR>";
+    		}
+    	} ?>
+    	
+    	
+    </td>
+  </tr>
+  <?php endif;?>
+  
+  <tr>
+     <td>Akkoord datum/ tijd:</td>
+    <td>
+    	<?php if($proefdruk->proof_status==2): ?>
+    	<?php echo  (isset($proefdruk->proof_approvedate)) ? $proefdruk->proof_approvedate: "Nog niet bekend"; ?>
+    	<?php endif;?>
+    
+ </td>
+  </tr>
+  <tr>
+     <td>Goedgekeurd door:</td>
+    <td>
+    	<?php echo  (isset($customeroptions->co_custname)) ? $customeroptions->co_custname: "Nog niet bekend"; ?>
+    	
+    </td>
+  </tr>
+  <tr>
+    <td>Opmerkingen:</td>
+    <td>
+		<?php echo  (isset($customeroptions->co_comment)) ? $customeroptions->co_comment: "Nog niet bekend"; ?>
+    </td>
+  </tr>
+  
+   <tr>
+    <td>Betaalmethode:</td>
+    <td>
+		<?php
+		switch(@$customeroptions->co_paymethod) {
+			case 1:
+				echo "Online bankieren";
+			break;
+			case 2:
+				echo "Bankoverschrijving";
+			break;
+			case 3:
+				echo "Reeds betaald";
+			break;
+			case 4:
+				echo "Factuur";
+			break;
+	
+		}?>
+    </td>
+  </tr>
+  
+  <tr>
+    <td>Bedrag:</td>
+    <td><?php echo $proefdruk->proof_amount;?></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><th align="left" colspan="2" style="padding:3px; background:#CCCCCC;">Afleveradres</th></tr>
+  <tr>
+    <td>bedrijf:</td>
+    <td>
+    	<?php echo  (isset($customerdelivery->cd_company)) ? $customerdelivery->cd_company: "Nog niet bekend"; ?>
+    	
+    </td>
+  </tr>
+  <tr>
+    <td>naam:</td>
+    <td>
+    	<?php echo  (isset($customerdelivery->cd_name)) ? $customerdelivery->cd_name: "Nog niet bekend"; ?>
+    	</td>
+  </tr>
+  <tr>
+    <td>Straat:</td>
+    <td>
+    	<?php echo  (isset($customerdelivery->cd_street)) ? $customerdelivery->cd_street: "Nog niet bekend"; ?>
+    	
+    </td>
+  </tr>
+  <tr>
+    <td>Nummer:</td>
+    <td>
+    	<?php echo  (isset($customerdelivery->cd_housenumber)) ? $customerdelivery->cd_housenumber: "Nog niet bekend"; ?>
+    	
+    </td>
+  </tr>
+  <tr>
+    <td>Postcode:</td>
+    <td><?php echo  (isset($customerdelivery->cd_postal)) ? $customerdelivery->cd_postal: "Nog niet bekend"; ?></td>
+  </tr>
+  <tr>
+    <td>Woonplaats: </td>
+    <td><?php echo  (isset($customerdelivery->cd_place)) ? $customerdelivery->cd_place: "Nog niet bekend"; ?></td>
+  </tr>
+  <tr>
+    <td>Land:</td>
+    <td>
+    	<?php echo  (isset($customerdelivery->cd_country)) ? $customerdelivery->cd_country: "Nog niet bekend"; ?>
+    	
+    </td>
+  </tr>
+  <tr>
+    <td>Telefoonnummer:</td>
+    <td><?php echo  (isset($customerdelivery->cd_phone)) ? $customerdelivery->cd_phone: "Nog niet bekend"; ?>
+    	</td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><th align="left" colspan="2" style="padding:3px; background:#CCCCCC;">Product opties</th></tr>
+  <tr>
+    <td>Order details:</td>
+    <td>  <?php
+	         $show_new_name  = true;
+			 $prev_id  = 0;
+			 $proof_opt_name = '';
+			if($this->options==NULL) {
+				if($proefdruk->proof_size_customer == 1) {
+					echo $proefdruk->proof_size_customer_comment;
+				} else {
+					echo "Geen productopties beschikbaar";
+				}
+				
+			}	 else {
+				
+					 
+		  	foreach($this->options as $values) : 
+		  	if($values->proof_opt_id != $prev_id) {
+				  	$show_new_name= true;
+				  }
+			   ?>
+		  	
+		  	   <table >
+		  	   	<?php $prev_id = $values->proof_opt_id;
+				  if($show_new_name==true) {
+				  	echo  '<tr> <td colspan=2> <B>'.$values->proof_opt_name.' </B></td></tr> ';
+					 $show_new_name = false;
+				  } ?>
+		   		<tr><td>
+            	<div class="" style="width:150px;">
+ 
+                        		<?php echo $values->o_name;?>&nbsp;&nbsp;&nbsp;</div>
+                </td>
+                <td>
+   					<?php echo $values->o_value;?>
+                </td>
+                </tr>
+		 	</table>
+								
+							   
+							 
+                             
+                               
+    	<?php endforeach;
+    	
+    	}	?>
+    </table>
+    	
+    	
+    </td>
+  </tr>
+</table>
+
+  <div style="font-size:12px;"><p></p>
+  </div>
+</body>
+</html>

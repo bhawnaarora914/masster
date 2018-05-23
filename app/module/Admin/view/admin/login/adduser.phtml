@@ -1,0 +1,35 @@
+<?php
+$form = $this->form;
+$form->setAttribute('method', 'post');
+$form->setAttribute('class', 'form-horizontal');
+$form->setAttribute('id', 'validateSubmitForm');
+$form->prepare();
+echo $this->form()->openTag($form);?>
+<div class="widget-body" style="padding-bottom: 0;">
+		<div class="row-fluid" >
+			<div class="widget widget-4 uniformjs">
+	
+				<div class="widget-head"  style="margin-left:10px;">
+					<h4 class="heading">Gebruiker gegevens</h4>
+				</div>
+				<BR>
+					
+	<BR><BR>
+				<div class="uniformjs">
+				<div class="control-group">
+					<?php echo $this->formRow($form->get('user_id'));?>
+					<label class="control-label" for="proof_number">Gebruikersnaam</label>
+					<div class="controls"><?php echo $this->formRow($form->get('username'));?> </div>
+				</div>
+				
+				<div class="control-group">
+					
+					<label class="control-label" for="proof_number"><?php if($user_id!=0) { echo "Wijzig wachtwoord";} else { echo "Wachtwoord";}?></label>
+					<div class="controls"><?php echo $this->formRow($form->get('password'));?> </div>
+				</div>
+				
+<div class="form-actions" style="margin: 0;">
+		
+		<input type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" value="Opslaan" name="opslaan"><i></i>		
+	</div>
+<?php echo $this->form()->closeTag(); ?>

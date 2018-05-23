@@ -1,0 +1,48 @@
+                    <form name="frmstepthree" id="frmstepthree" method="post">
+                       <div class="main fltright"><!--main-->
+                    	<div class="center">
+                            <h2> Afleveradres</h2>
+                          <div class="clr"></div><br />
+                            <div style="background:#7eae0d; height:2px;"></div><br />
+                            
+                          
+                             <div style="margin-left:50px; margin-top:100px;">
+                           	
+                           		
+                           	
+                         <p style="line-height:20px; text-align:center; border-top:1px solid #5B8400; border-bottom:1px solid #5B8400;"><BR><b>Algemene opmerkingen omtrent uw order en onze voorraadstanden:</b><br />
+                                              Artikelen voor uw order kunnen pas worden gereserveerd zodra de betaling en akkoord op onze proefdruk bij Factory Groep is ontvangen en verwerkt. 
+Onze voorraadstanden zijn altijd onder voorbehoud!<BR><BR>
+</div>
+
+<div class="middle"> 
+                                <div id="completebutton">
+                            <div style="float:right; margin-left:40px;">
+                            <input type="submit" class="btn" value="Volgende"  name="next" onclick="doSub();"  style="margin-top:20px; margin-left:-20px;"/>
+                            </div>
+                            
+                            <div style="float:right; margin:25px;">
+                            <input type="checkbox" name="chkterms" id="chkterms" />&nbsp;Ik ga akkoord met bovenstaande voorraad/betalings voorwaarden.
+                            </div>
+                            
+                          </div>
+                         </div>
+                            
+                        
+    </div><!--main-->
+    </form>
+    
+     <script  type="text/javascript">
+                    
+					 var frmvalidator = new Validator("frmstepthree");
+					 frmvalidator.addValidation("chkterms","shouldselchk=on","U dient akkoord te gaan met onze voorraad/betalings voorwaarden..");
+					 
+					</script>
+                    
+                   
+                    <div class="clr"></div>
+                </div><!--container_wrap_end-->
+            </div><!--container_bg_end-->
+        </div><!--container_bgtop_end-->
+    </div><!--container_outer_end-->
+    

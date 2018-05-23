@@ -1,0 +1,231 @@
+
+    <script>
+                        function goBack(id)
+                        {
+                            window.location="/app/proefdruk/proefdruk/index/"+id;
+                        }
+
+                        
+                    </script>
+                    <form name="frmstepthree" id="frmstepthree" method="post" enctype="multipart/form-data">
+                       
+
+
+
+
+<div id="left-cont">
+<div class="left-sidebar">
+
+<div class="link2" onclick="javascript:history.go(-1);">
+<div class="link2-list">1</div>
+<div class="link-txt">PROEFDRUK</div>
+</div>
+
+
+
+<div class="link1 mB15" >
+<div class="link1-list">2</div>
+<div class="link-txt">AFLEVERADRES</div>
+</div>
+<div class="text-box">
+<input type="text" name="company"  <?php if(isset($session->step2_company)){ echo "value='".$session->step2_company."'"; } else{ echo "placeholder='Bedrijf...'";}?> title="Vul hier eventueel een bedrijfsnaam in." class="text-box-2 masterTooltip" />
+
+<span style="color:red; display:none; line-height:20px; float:left;" id="errcompany">&nbsp;Gelieve uw bedrijfsnaam in te vullen. Geen bedrijf? Vul dan een 0 in.</span>
+</div>
+
+
+<div class="text-box">
+<input type="text" name="attn" <?php if(isset($session->step2_tav)){ echo "value='".$session->step2_tav."'"; } else{ echo "placeholder='Contactpersoon ...'";}?> title="Vul de gewenste contactpersoon in." class="text-box-2 masterTooltip" />
+<span style="color:red; display:none; line-height:20px; float:left;" id="errattn">&nbsp;Gelieve uw naam in te vullen.</span>
+</div>                           
+                                
+                                
+<div class="text-box">
+<input type="text" name="street" <?php if(isset($session->step2_straat)){ echo "value='".$session->step2_straat."'"; } else{ echo "placeholder='Straat ...'";}?> title="Vul hier de straatnaam in." class="text-box-2 masterTooltip" />
+
+
+<span style="color:red; display:none; line-height:20px; float:left;" id="errstreet">&nbsp;Gelieve uw straat in te vullen.</span>
+</div>                           
+                                   
+ <div class="text-box">
+<input type="text" name="number" <?php if(isset($session->step2_huisnr)){ echo "value='".$session->step2_huisnr."'"; } else{ echo "placeholder='Huisnummer ...'";}?> title="Vul het huisnummer in." class="text-box-2 masterTooltip" />
+
+
+<span style="color:red; display:none; line-height:20px; float:left;" id="errnumber">&nbsp;Gelieve uw huisnummer in te vullen.</span>
+
+</div>                           
+                                        
+ <div class="text-box">
+<input type="text" name="postcode" <?php if(isset($session->step2_postcode)){ echo "value='".$session->step2_postcode."'"; } else{ echo "placeholder='Postcode ...'";}?> title="Vul de postcode in." class="text-box-2 masterTooltip" />
+<span style="color:red; display:none; line-height:20px; float:left;" id="errpostcode">&nbsp;Gelieve uw postcode in te vullen.</span>
+
+
+
+</div>                
+
+
+<div class="text-box">
+<input type="text" name="city" <?php if(isset($session->step2_plaats)){ echo "value='".$session->step2_plaats."'"; } else{ echo "placeholder='Plaats ...'";}?> title="Vul de plaats in." class="text-box-2 masterTooltip" />
+
+<span style="color:red; display:none; line-height:20px; float:left;" id="errcity">&nbsp;Gelieve uw plaats in te vullen.</span>
+
+</div>     
+
+
+
+<div class="text-box">
+<input type="text" name="country" <?php if(isset($session->step2_land)){ echo "value='".$session->step2_land."'"; } else{ echo "placeholder='Land ...'";}?> title="Vul het land in." class="text-box-2 masterTooltip" />
+
+
+<span style="color:red; display:none; line-height:20px; float:left;" id="errcountry">&nbsp;Gelieve uw land in te vullen.</span>
+</div>                
+                                     
+
+
+<div class="text-box">
+<input type="text" name="telephone" <?php if(isset($session->step2_telefoon)){ echo "value='".$session->step2_telefoon."'"; } else{ echo "placeholder='Telefoon nummer ...'";}?> title="Vul het telefoonnummer in." class="text-box-2 masterTooltip" />
+
+
+
+<span style="color:red; display:none; line-height:20px; float:left;" id="errtelephone">&nbsp;Gelieve uw telefoonnummer in te vullen.</span>
+
+
+</div>     
+
+
+<input class="red-btn-1" type="submit" class="btn" value="VOLGENDE" onclick="return doSub();" style="float:right;" />
+
+
+<div class="link2 mT35">
+<div class="link2-list">3</div>
+<div class="link2-txt">BETALING</div>
+</div>
+
+<div class="link2">
+<div class="link2-list">4</div>
+<div class="link2-txt">BEVESTING</div>
+</div>
+
+
+</div>
+
+</div>
+
+<style>
+.fluidMedia {
+     float: left;
+    height: 0;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    position: relative;
+   
+}
+
+.fluidMedia iframe {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    
+    width: 100%;
+    height: 100%;
+
+}
+.cont-right {
+    float: left;
+    margin: 0 0 0 -3px !important;
+    width: 572px;
+}
+</style>
+
+
+
+
+
+<div class="cont-right">
+
+<div class="fluidMedia">
+ <iframe src="/app/proefdruk/files/proefdruk/<?php echo $proefdruk->proof_file;?>" style="width:1034px; height:736px;" frameborder="0" ></iframe>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          
+                           
+                             
+                          <!--    <div style="font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin-top:5px;" > 
+                            <BR> <?php // echo $proefdruk->proof_adress_comment;?>
+                              <br /><BR>
+                             </div>
+
+                       
+                                <input type="button" class="btn" value="Vorige" onclick="javascript:history.go(-1);"  style="float:left;" />-->
+                                
+                       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </form>
+                    
+                    <script  type="text/javascript">
+                     var frmvalidator = new Validator("frmstepthree");
+                     frmvalidator.addValidation("attn","req","U dient uw naam op te geven");
+                     frmvalidator.addValidation("street","req","U dient uw straat op te geven");
+                     frmvalidator.addValidation("street","regexp=^((?![pP][oO][sS][tT][bB][uU][sS]).)*$","  Het is niet mogelijk om te leveren op een postbus adres. Gelieve een ander adres in te voeren.");
+                     frmvalidator.addValidation("number","req","U dient uw huisnummer op te geven");
+                     frmvalidator.addValidation("postcode","req","U dient uw postcode op te geven");
+                     frmvalidator.addValidation("city","req","U dient uw plaats op te geven"); 
+                     frmvalidator.addValidation("telephone","req","U dient een telefoonnummer op te geven");  
+                     frmvalidator.addValidation("telephone","numeric","De telefoonnummer moet een numerieke waarde bevatten");  
+                    </script>
+                   
+    

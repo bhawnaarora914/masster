@@ -1,0 +1,26 @@
+
+<ul class="navigation">
+	<?php 
+
+	
+	foreach ($this->container as $page):
+		
+	
+		
+	 ?>
+    <li>
+    	<!-- class="<?php echo ($page->isActive()==true ? "open_with_sub" : "");?>" -->
+        <a    href="<?php echo $page->getHref();?>"> <?php echo $page->getLabel();?></a>
+   
+    <ul>
+    	 <?php foreach($page->getPages() as $child):
+		 $active = $child->isActive(true);
+		  ?>
+            <li>
+                <a href="<?php echo $child->getHref();?>"><?php echo $child->getLabel();?> </a>
+            </li>
+         <?php endforeach;?>
+          </ul>
+    <?php endforeach;?>
+     </li>
+</ul>		

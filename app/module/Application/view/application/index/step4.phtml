@@ -1,0 +1,606 @@
+
+<script>
+  function goBack()
+  {
+    window.location="/app/proefdruk/proefdruk/step3/<?php echo $proof_id;?>";
+  }
+  
+  function urgentDiv(){
+
+    $(".step3complete").removeClass("displaynone");    
+    $("#stpe3remove").removeClass("link2");    
+    $(".step4start").addClass("displaynone");
+    $("#step4Startas").addClass("link2");
+    $("#step4Startas").addClass("mT35");
+    $("#stpe3remove").addClass("mB15");
+    $("#stpe3remove").addClass("link1");
+      
+    
+  } 
+  function showbank()
+  {
+      document.getElementById("paymentmethod").value=2;
+      $("#showonline2").css("border","2px solid #cccccc");
+      $("#showbank2").css("border","2px solid #83ad1d");
+      $("#onlinebeatlen").removeClass("onlineImg");
+      $("#alreadyImg").removeClass("onlineImg");
+      $("#factuurImg").removeClass("onlineImg");
+      $("#bankbeatlenImg").addClass("onlineImg");
+      $("#errorDetail").addClass("displaynone");
+      $("#chkonline").hide();
+      document.getElementById("onlinebetalen").style.display="none";
+      document.getElementById("completebutton").style.display="block";
+  //document.getElementById("showonline2").setAttribute("class", "paybutton");
+    // document.getElementById("tabledelivery").style.display="none";
+   // document.getElementById("tableonline").style.display="none";
+    // document.getElementById("tablefifty").style.display="none";
+    // document.getElementById("tablepaid").style.display="none";
+    //document.getElementById("showpaid2").setAttribute("class", "paybutton");
+    // document.getElementById("showfifty2").setAttribute("class", "paybutton");
+  //document.getElementById("showonline2").setAttribute("class", "paybutton");
+  //document.getElementById("showfifty3").setAttribute("class", "paybutton");
+    // document.getElementById("showdelivery2").setAttribute("class", "paybutton");
+    //document.getElementById("showbank2").setAttribute("class", "paybuttonActive");
+    }
+
+
+  function showonline()
+  {
+    document.getElementById("paymentmethod").value=1;
+    $("#showonline2").css("border","2px solid #83ad1d");
+    $("#showbank2").css("border","2px solid #cccccc");
+    $("#onlinebeatlen").addClass("onlineImg");
+    $("#bankbeatlenImg").removeClass("onlineImg");
+    $("#alreadyImg").removeClass("onlineImg");
+    $("#factuurImg").removeClass("onlineImg");
+    $("#errorDetail").addClass("displaynone");
+    $("#stpe3remove").removeClass("");
+    $("#chkonline").show();
+    document.getElementById("onlinebetalen").style.display="block";
+     document.getElementById("completebutton").style.display="none";
+     // document.getElementById("tablefifty").style.display="none";
+    // document.getElementById("tabledelivery").style.display="none";
+   // document.getElementById("showbank2").setAttribute("class", "paybutton");
+    // document.getElementById("showfifty2").setAttribute("class", "paybutton");
+    // document.getElementById("showdelivery2").setAttribute("class", "paybutton");
+  //  document.getElementById("showfifty3").setAttribute("class", "paybutton");  
+    // document.getElementById("tablepaid").style.display="none";
+    // document.getElementById("showpaid2").setAttribute("class", "paybutton");
+  }
+  
+  function showfifty() 
+  { 
+    document.getElementById("paymentmethod").value=4;
+    $("#showonline2").css("border","2px solid #cccccc");
+    $("#showbank2").css("border","2px solid #cccccc");
+    $("#onlinebeatlen").removeClass("onlineImg");
+    $("#alreadyImg").removeClass("onlineImg");
+    $("#bankbeatlenImg").removeClass("onlineImg");
+    $("#factuurImg").addClass("onlineImg");
+    $("#errorDetail").addClass("displaynone");
+    $("#chkonline").hide();
+
+    document.getElementById("onlinebetalen").style.display="none";
+    document.getElementById("completebutton").style.display="block";
+    document.getElementById("tabledelivery").style.display="none";
+    // document.getElementById("tableonline").style.display="none";
+    // document.getElementById("tablebank").style.display="none";
+    // document.getElementById("tablefifty").style.display="block";
+    // document.getElementById("showbank2").setAttribute("class", "paybutton");
+    // document.getElementById("showdelivery2").setAttribute("class", "paybutton");
+    // document.getElementById("showonline2").setAttribute("class", "paybutton");
+  //document.getElementById("showfifty3").setAttribute("class", "paybutton");
+    // document.getElementById("showfifty2").setAttribute("class", "paybuttonActive");
+  
+    // document.getElementById("tablepaid").style.display="none";
+    //document.getElementById("showpaid2").setAttribute("class", "paybutton");
+  
+  }
+   function showfif()
+  { //alert('f');
+  $("#chkonline").hide();
+  document.getElementById("onlinebetalen").style.display="none";
+  document.getElementById("paymentmethod").value=4;
+    document.getElementById("completebutton").style.display="block";
+    document.getElementById("tabledelivery").style.display="none";
+    // document.getElementById("tableonline").style.display="none";
+    // document.getElementById("tablebank").style.display="none";
+    document.getElementById("tablefifty").style.display="block";
+    document.getElementById("showbank2").setAttribute("class", "paybutton");
+    document.getElementById("showdelivery2").setAttribute("class", "paybutton");
+    //document.getElementById("showonline2").setAttribute("class", "paybutton");
+  document.getElementById("showfifty2").setAttribute("class", "paybutton");
+  //document.getElementById("showfifty3").setAttribute("class", "paybutton");
+    //document.getElementById("showfifty3").setAttribute("class", "paybuttonActive");
+  
+    document.getElementById("tablepaid").style.display="none";
+    //document.getElementById("showpaid2").setAttribute("class", "paybutton");
+  }
+  function showdelivery()
+  { //alert('f');
+
+    document.getElementById("paymentmethod").value=3;
+    $("#showonline2").css("border","2px solid #cccccc");
+    $("#showbank2").css("border","2px solid #cccccc");
+    $("#onlinebeatlen").removeClass("onlineImg");
+    $("#bankbeatlenImg").removeClass("onlineImg");
+    $("#factuurImg").removeClass("onlineImg");
+    $("#alreadyImg").addClass("onlineImg");
+    $("#errorDetail").addClass("displaynone");
+    $("#chkonline").hide();
+
+    document.getElementById("onlinebetalen").style.display="none";
+  
+    document.getElementById("completebutton").style.display="block";
+    // document.getElementById("tableonline").style.display="none";
+    // document.getElementById("tablebank").style.display="none";
+    // document.getElementById("tablefifty").style.display="none";
+    // document.getElementById("tabledelivery").style.display="block";
+    // document.getElementById("showbank2").setAttribute("class", "paybutton");
+    // document.getElementById("showfifty2").setAttribute("class", "paybutton");
+    // document.getElementById("showonline2").setAttribute("class", "paybutton");
+    // document.getElementById("showdelivery2").setAttribute("class", "paybuttonActive");
+
+    // document.getElementById("tablepaid").style.display="none";
+    //document.getElementById("showpaid2").setAttribute("class", "paybutton");
+  }
+
+  function showpaid()
+  {
+    
+    document.getElementById("onlinebetalen").style.display="none";
+    document.getElementById("paymentmethod").value=2;
+    document.getElementById("completebutton").style.display="block";
+    // document.getElementById("tablebank").style.display="none";
+    document.getElementById("tablefifty").style.display="none";
+    document.getElementById("tabledelivery").style.display="none";
+    // document.getElementById("tableonline").style.display="none";
+    document.getElementById("tablepaid").style.display="block";
+    document.getElementById("showbank2").setAttribute("class", "paybutton");
+    document.getElementById("showfifty2").setAttribute("class", "paybutton");
+    document.getElementById("showdelivery2").setAttribute("class", "paybutton");
+    
+    //document.getElementById("showpaid2").setAttribute("class", "paybuttonActive");
+  
+  }
+  
+  function doSub()
+  {
+    if(document.getElementById("chkterms").checked == false)
+    {
+      alert("U dient akkoord te gaan met onze voorraad/betalings voorwaarden...");
+      document.getElementById("chkterms").focus();
+      return false;
+    }
+    return true;
+  }
+
+  function checkCondition(){
+    if(document.getElementById("paymentmethod").value==""){
+      $("#errorDetail").removeClass("displaynone");
+    }
+    else{
+      $("#errorDetail").addClass("displaynone");
+      $(".step3complete").addClass("displaynone");
+      $(".step4start").removeClass("displaynone");
+      $("#stpe3remove").removeClass("link1 mB15");
+      $("#stpe3remove").addClass("link2");
+      $("#step4Startas").removeClass("link2 mT35");
+      $("#step4Startas").addClass("link1 mB15");
+    }
+  }
+
+
+
+function target_popup(form) {
+  var w=850; var h=screen.height;
+  var left = (screen.width/2)-(w/2);
+  var top = (screen.height/2)-(h/2);
+  
+  //var targetWin = window.open ('', 'formpopup', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+    //window.open('', 'formpopup', 'width=800,height='+screen.height+',resizeable,scrollbars');
+    var targetWin = window.open ('', "_self");
+    form.target = 'formpopup';
+  
+}
+</script>
+<style>
+  body,table,div {font-family: Arial,Helvetica,sans-serif; font-size: 12px;}
+</style>
+
+<?php
+            $paymethodsArr = explode(",",$proefdruk->proof_paymethod);
+            
+            $paymethod  = array('online'=>false,'bank'=>false,'factuur'=>false,'paid'=>false);
+            
+            foreach($paymethodsArr as $values) {
+              switch($values) {
+                case 1:
+                  $paymethod['online'] = true;
+                break;
+                case 2:
+                  $paymethod['bank'] = true;
+                break;
+                case 3:
+                  $paymethod['factuur'] = true;
+                break;
+                case 4:
+                  $paymethod['paid'] = true;
+                break;
+              }
+  
+            }?>
+            
+
+
+          <script>
+
+          <?php 
+          
+        
+          if($paymethod['online']==false){ ?>
+            $(document).ready(function() { 
+              
+                <?php
+                if($paymethod['bank']==true) {
+                  echo "showbank();";
+                } elseif($paymethod['factuur']==true) {
+                  echo "showfifty();";
+                } elseif($paymethod['paid']==true) {
+                echo "showdelivery();";
+                }  ?>
+            }); 
+            <?php  }
+                    else{ ?>
+                      $(document).ready(function() { <?php 
+                        echo "showonline();";
+                      ?>
+                    });
+            <?php
+                }
+            ?>
+            function goBack(id)
+            {
+              window.location="/app/proefdruk/proefdruk/index/"+id;
+            }
+
+
+              
+          </script>
+
+
+<div id="left-cont">
+<div class="left-sidebar">
+
+<div class="link2" onclick="javascript:history.go(-2);">
+<div class="link2-list">1</div>
+<div class="link-txt">PROEFDRUK</div>
+</div>
+
+
+
+<div class="link2" onclick="javascript:history.go(-1);">
+<div class="link1-list">2</div>
+<div class="link-txt">AFLEVERADRES</div>
+</div>
+<div class="link1 mB15" id="stpe3remove" onclick="urgentDiv();">
+<div class="link2-list">3</div>
+<div class="link2-txt">BETALING</div>
+</div>
+<div class="step3complete">
+<div class="displaynone" style="margin-left: 21px; font-size: 15px;color:red;" id="errorDetail"><span>Selecteer betaalmethode</span>
+</div>
+
+
+
+  <?php if($paymethod['online']==true): ?>
+
+<div class="thi-txt" id="onlinebeatlen">
+Online betaling  <img id="onlineBetaleImg" class="displaynone" style="margin-left: 130px;" src="/app/proefdruk/images/online.png"><br />
+<span>Uw order wordt direct in productie genomen.</span>
+</div>
+<div class="logo-box masterTooltip" id="showonline2" title="Betaling via I-deal, Giropay, MisterCash
+ 
+De snelste manier van betalen. Uw betaling 
+word binnen enkele seconden verwerkt. Uw 
+order kan dan ook na het afronden van de 
+proefdruk controle direct in productie geplaatst 
+worden. Zodra uw betaling is geslaagd verschijnt 
+hierna een bevestiging. Daarna kunt u simpel 
+uw controle afronden." onclick="showonline();">
+<img src="/app/proefdruk/images/logo-1.jpg" />
+<img src="/app/proefdruk/images/logo02.jpg" />
+<img src="/app/proefdruk/images/logo3.jpg" />
+</div>
+
+   <?php endif;?>
+
+
+  <?php if($paymethod['bank']==true): ?>
+
+<div class="thi-bot mT35" id="bankbeatlenImg">
+Bankoverschrijving<br />
+<span>
+Uw order wordt in productie genomen na<br />
+ontvangst van betaling op onze bankrekening.</span>
+</div>
+<div class="bottom-box masterTooltip" title="Betaling via bankoverschrijving
+ 
+Indien u gebruik wenst te maken van de optie 
+vooruit betalen willen wij u er graag op 
+attenderen dat uw bestelling pas in productie 
+word genomen als de betaling bij ons 
+ontvangen is.
+
+Uw levertijd kan dus door deze optie opgeschort 
+worden als de betaling vertraging oploopt." id="showbank2" onclick="showbank();">
+<div class="bot-text">
+BANKOVERSCHRIJVING<br /><br />
+<span>BIC: RABONL2U<br />
+IBAN:NL73 RABO 0127 1073 47</span>
+</div>
+</div>
+   <?php endif;?>
+
+    
+    
+
+
+
+  <?php if($paymethod['factuur']==true): ?>
+<div onclick="showfifty();" id="showfifty2">
+    <div class="thi-bot mT35" id="factuurImg" style="cursor:pointer;">
+    Factuur na levering<br />
+    <span>
+    Zoals besproken ontvangt u van Factory <br/> Groep
+    een factuur nadat u de levering heeft ontvangen.</span>
+    </div>
+</div>
+<?php endif;?>
+
+
+
+<?php if($paymethod['paid']==true): ?>
+  <div id="showdelivery2" onclick="showdelivery();" >
+  <div class="thi-bot "  id="alreadyImg" style="cursor:pointer;margin-top:11px;">
+  Reeds betaald<br />
+  <span>
+  Uw beatling is al ontvangen en verwerkt.</span>
+  </div>
+  </div>
+<?php endif;?>
+
+
+<div class="red-btn-1" onclick="checkCondition();">
+VOLGENDE
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="link2 mT35" id="step4Startas">
+<div class="link2-list">4</div>
+<div class="link2-txt">BEVESTING</div>
+</div>
+<div class="step4start displaynone" >
+<div class="last-box">
+Uw order en onze voorraadstanden.<br />
+<span>
+<p>Artikelen voor uw order kunnen pas worden 
+gereserveerd zodra de betaling en akkoord op 
+onze proefdruk bij Factory Groep is ontvangen 
+en verwerkt. 
+<br />
+<br />
+
+Onze voorraadstanden zijn altijd onder voorbehoud!
+<br />
+<br />
+
+Factory Groep kan achteraf niet aansprakelijk 
+gesteld worden voor eventuele fouten in
+ontwerp/tekst of maatvoeringen. </p></span>
+</div>
+
+<div id="chkonline"> 
+  <form action="/app/proefdruk/pay/pay.php" method="post"  name="frmapi" id="frmapi"> 
+  <div class="chk">
+  <input type="checkbox" name="chktermsonline" style="height: 20px;width: 33px;" id="chktermsonline" /></div>
+  <div class="chk-txt"> Ik ga akkoord met bovenstaande <br />
+  voorraad/betalings voorwaarden. </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="onlinebetalen"> 
+ <input type="hidden" name="proof_id" id="proof_id" value="<?php echo $proof_id;?>" />
+ <input type="hidden" name="firstname"  value="<?php echo $session->step2_tav;?>" />
+ <input type="hidden" name="zipcode"  value="<?php echo $session->step2_postcode;?>" />
+ <input type="hidden" name="city"  value="<?php echo $session->step2_plaats;?>" />
+ <input type="hidden" name="country"  value="<?php echo $country;?>" />
+ <input type="hidden" name="phone"  value="<?php echo $session->step2_telefoon;?>" />
+ <input type="hidden" name="email"  value="<?php echo $session->email;?>" />
+ <input type="hidden" name="description"  value="<?php echo $proefdruk->proof_number;?>" />
+ <input type="hidden" value="<?php echo $proefdruk->proof_amount *100;?>" name="amount" />
+ 
+ <input type="submit" id="successbutton" value="Betalen" class="last-btn" style="margin-top: -2px;  border: none;  margin-left: 36px;"  /> 
+ </form>
+ <script  type="text/javascript">
+                         var frmvalidator = new Validator("frmapi");
+                         frmvalidator.addValidation("chktermsonline","shouldselchk=on","U dient akkoord te gaan met onze voorraad/betalings voorwaarden...");
+                  
+ </script>
+ <form method="post"> 
+ </div>
+ <div id="completebutton">
+<input type="hidden" name="paymentmethod" id="paymentmethod" />
+
+<div class="chk">
+ <input type="checkbox"  name="chkterms" id="chkterms" style="height: 20px;width: 33px;" />
+</div>
+  <div class="chk-txt"> Ik ga akkoord met bovenstaande <br />
+  voorraad/betalings voorwaarden. </div> 
+
+
+<input type="submit" value="AFRONDEN" class="last-btn" style="margin-top: -2px;  border: none;  margin-left: 36px;"  onclick="return doSub();" /> 
+
+    </form>        
+                     </div>
+
+
+</div>
+</div>
+
+</div>
+
+
+
+<style>
+.fluidMedia {
+     float: left;
+    height: 0;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    position: relative;
+   
+}
+
+.fluidMedia iframe {
+    position: absolute;
+    top: 0; 
+    left: 0;
+  
+    width: 100%;
+    height: 100%;
+
+}
+.cont-right {
+    float: left;
+    margin: 0 0 0 -3px !important;
+    width: 572px;
+}
+</style>
+
+
+
+<div class="cont-right">
+
+<div class="fluidMedia">
+ <iframe src="/app/proefdruk/files/proefdruk/<?php echo $proefdruk->proof_file;?>" style="width:1034px; height:736px;" frameborder="0" ></iframe>
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                 
+                      
+ <table width="650" id="tablepaid" style="margin:0 auto; display:none;">
+                                  <tr>
+                                      <th align="left">Reeds betaald</th>
+                                        </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr><td>
+                                      <p style="line-height:20px; text-align:justify;">We hebben voor uw bestelling reeds de betaling ontvangen. U ontvangt dan ook na de levering van ons per mail een factuur voor uw boekhouding.
+                                        <br />
+<br />
+Uw order word na het afronden van de controle dan ook in productie geplaatst.</p>
+                                      </p>
+                                    </td></tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr><td></td></tr>
+                                    <tr><td>
+                                   
+                                </table>                                            
+  <table width="650" id="tabledelivery" style="margin:0 auto; display:none;">
+                                  <tr>
+                                      <th align="left">Reeds betaald</th>
+                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr><td>
+                                      <p style="line-height:20px; text-align:justify;">We hebben uw (aan)betaling reeds ontvangen en verwerkt. Uw order word in productie genomen zodra uw goedkeuring op onze proefdruk is verwerkt. U ontvangt na de levering van ons een digitale factuur per mail. De digitale factuur is voorzien van het totaalbedrag en het nog eventueel openstaande bedrag.<br /><br />
+<br />
+Klik hier onder op afronden om uw proefdrukcontrole compleet te maken.</p>
+                                    </td></tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr><td></td></tr>
+                                </table>
+  
+                                  
+     <table width="650" id="tablefifty" style="margin:0 auto; display:none;">
+                                  <tr>
+                                      <th align="left">Betaling via factuur</th>
+                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr><td>
+                                      <p style="line-height:20px; text-align:justify;">Uw order word in productie genomen zodra uw goedkeuring op onze proefdruk is verwerkt. U ontvangt na de levering van ons een digitale factuur per mail. De digitale factuur is voorzien van het totaalbedrag en het openstaande bedrag.<br /><br />
+De betalingstermijn voor onze facturen bedraagt maximaal 14 dagen na factuurdatum. 
+<br />
+Klik hier onder op afronden om uw proefdrukcontrole compleet te maken.</p>
+                                    </td></tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr><td></td></tr>
+                                </table>    
+   
+           
+    

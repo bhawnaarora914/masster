@@ -1,0 +1,466 @@
+
+<script type="text/javascript">
+function doChoose(option)
+  {
+    if(option=='accept')
+  { 
+    document.getElementById("errcomments").style.display ="none";
+    document.getElementById("aanerrcomments").style.display ="none";
+    document.getElementById("txtcomments").style.backgroundColor ="#FFFFFF";
+    
+    document.getElementById("accept").value=1;
+    $("#acceptbutton").addClass("mygreen");
+    document.getElementById("decline").value=0;
+    $("#declinebutton").removeClass("myRed");
+    document.frmstepone.action=document.getElementById("defaultaction").value;
+    document.getElementById("submitid").value="VOLGENDE";
+    document.getElementById("extra_file1").style.display="none";
+    $("#txtcomments").attr("placeholder","Eventuele opmerkingen...");
+    $("#txtcomments").attr("title","Vul hier eventuele opmerkingen in over uw order");
+    $(".mytextarea").removeAttr("style");
+    if(document.getElementById("txtaddcomments")){
+      document.getElementById("txtaddcomments").style.backgroundColor ="#FFFFFF";     
+      $("#txtaddcomments").removeClass("displaynone"); 
+    }
+  }
+  else
+  { 
+    document.getElementById("aanerrcomments").style.display ="none";
+    document.getElementById("txtcomments").style.backgroundColor ="#FFFFFF";
+    document.getElementById("decline").value=1;
+    $("#declinebutton").addClass("myRed");
+    document.getElementById("accept").value=0;
+    $("#acceptbutton").removeClass("mygreen");
+    document.frmstepone.action=document.getElementById("declineaction").value;
+    document.getElementById("submitid").value="AFRONDEN";
+    document.getElementById("extra_file1").style.display="block";
+    $("#txtcomments").attr("placeholder","Opmerkingen");
+    $("#txtcomments").attr("title","U gaat niet akkoord met onze proefdruk. Graag ontvangen wij uw gewenste wijziging of opmerkingen.");
+    $(".mytextarea").removeAttr("style");
+    if(document.getElementById("txtaddcomments")){
+      document.getElementById("txtaddcomments").style.backgroundColor ="#FFFFFF";
+      $("#txtaddcomments").addClass("displaynone");
+    }
+  }
+  }
+
+  function doSub()
+  {
+    if(document.getElementById("txtapprovedby").value=="")
+  {
+    document.getElementById("errapprovedby").style.display ="block";
+    document.getElementById("txtapprovedby").style.backgroundColor ="#FFA6A6";
+    document.getElementById("txtapprovedby").focus();
+    return false;
+  }
+  else
+  {
+    document.getElementById("errapprovedby").style.display ="none";
+    document.getElementById("txtapprovedby").style.backgroundColor ="#FFFFFF";
+  }
+  if(document.getElementById("accept").value==0 && document.getElementById("decline").value==0)
+  {
+    document.getElementById("erraccept").style.display ="block";
+    return false;
+  }
+  else
+  {
+    document.getElementById("erraccept").style.display ="none";
+  }
+  if(document.getElementById("decline").value==1)
+  {
+    if(document.getElementById("txtcomments").value=="")
+    {
+      document.getElementById("aanerrcomments").style.display ="none";
+      document.getElementById("errcomments").style.display ="inline-block";
+      document.getElementById("txtcomments").style.backgroundColor ="#FFA6A6";
+      document.getElementById("txtcomments").focus();
+      return false;
+    }
+    else
+    {
+      document.getElementById("errcomments").style.display ="none";
+      document.getElementById("aanerrcomments").style.display ="none";
+      document.getElementById("txtcomments").style.backgroundColor ="#FFFFFF";
+    }
+  }
+  if(document.getElementById("accept").value==1)
+  {
+    if(document.getElementById("txtaddcomments")){
+      if(document.getElementById("txtaddcomments").value=="")
+      {
+        document.getElementById("errcomments").style.display ="none";
+        document.getElementById("aanerrcomments").style.display ="inline-block";
+
+        document.getElementById("txtaddcomments").style.backgroundColor ="#FFA6A6";
+        document.getElementById("txtaddcomments").focus();
+        return false;
+      }
+    }
+    // else if(document.getElementById("txtcomments").value=="")
+    // {
+    //   document.getElementById("errcomments").style.display ="inline-block";
+    //   document.getElementById("txtcomments").style.backgroundColor ="#FFA6A6";
+    //   document.getElementById("txtcomments").focus();
+    //   if(document.getElementById("txtaddcomments")){
+    //      document.getElementById("txtaddcomments").style.backgroundColor ="#FFFFFF";
+    //    }
+    //   return false;
+    // }
+    else
+    {
+      document.getElementById("errcomments").style.display ="none";
+      document.getElementById("aanerrcomments").style.display ="none";
+      document.getElementById("txtcomments").style.backgroundColor ="#FFFFFF";
+    }
+  }
+   return true;
+  }
+  
+
+  $(document).ready(function() { 
+    
+    
+    <?php if($this->uploaded): ?>
+    alert("Bestanden zijn ontvangen. Druk nu op Afgekeurd en vervolgens afronden om de proefdruk af te keuren.");
+    <?php else:?>
+    openfancybox();
+    <?php endif;?>
+  });
+  
+  function addField()
+  {
+    var fName = $("<input type=\"file\" class=\"mb6 masterTooltip\" title=\"Upload hier uw aangepast ontwerp.\"  name=\"file[]\" />");
+    $("#appendfile").append(fName);
+    
+    
+  }
+  </script>
+
+ 
+               <?php  if($session->step1_is_approved==1): ?>
+                <script>
+                    $(document).ready(function() {
+                      doChoose('accept');
+                    });
+                </script>
+                
+                <?php endif;?>
+
+<form name="frmstepone" id="frmstepone" method="post" enctype="multipart/form-data">
+<div id="left-cont">
+<div class="left-sidebar">
+
+
+   <?php if(!empty($proefdruk->proof_comment))  { ?>
+                                      
+                       <span>Commentaar:</span>
+                              
+                              <span style=" width: 200px;"><?php  echo $proefdruk->proof_comment;?>
+                                
+                                </span>
+                              </div>
+                      
+                      
+                     <?php  } ?>
+
+<!--<div style="background:#7eae0d; height:2px;"></div>
+                            <div class="">
+                              <div class="str">Datum:</div><span><?php $timestamp = strtotime($proefdruk->proof_date);
+                                                  echo date("d-m-Y",$timestamp);?>
+                                
+                                </span>
+                                <div class="clr"></div>
+                                <div class="str">Proefdruknummer:</div><span><?php echo $proefdruk->proof_number;?></span>
+                              <div class="clr"></div>
+                                <div class="str">Totaalbedrag: </div><span>EUR <?php echo $proefdruk->proof_amount;?></span>
+                              <div class="clr"></div>
+                              <a href="/app/proefdruk/files/proefdruk/<?php echo $proefdruk->proof_file;?>" target="_blank"><input type="button" class="downloadbutton" value="" onClick="saveImageAse(document.anImage); return false" /></a>
+                              <div class="clr"></div>
+                            </div>
+                            <div class="clr"></div>-->
+
+
+                             <!--   <?php
+                            
+                            if(count($files)!=0): ?>
+                                <BR>
+                               <div style="background:#7eae0d; height:2px;"></div>
+                                                        <div class="clr"></div>
+                                   <div class="">                                      
+                        
+                                  <?php foreach($files as $file):?>
+                        
+                        
+                        <div class="str"><?php echo $file->file_name;?>:</div><span><a  target="_blank" href="/app/proefdruk/files/proefdruk/<?php echo $file->file_filename;?>" style="color:black; text-decoration: underline;">
+                        Bekijken </a>
+                                
+                                </span>
+                        <?php endforeach;?>
+                                  
+                                
+                                </span>
+                              
+                                </div>
+                               <div style="background:#7eae0d; height:2px; margin-top:90px; "></div>
+                                <BR><BR><BR>
+                                
+                                <?php else:?>
+                                 <div style="background:#7eae0d; height:2px;"></div>
+                                 <?php endif;?>-->
+
+
+                
+                    
+                
+                <!-- </form> -->
+                
+                 <?php if($proefdruk->proof_status==0): ?>
+                 <div id="extra_file" style="display:none;"> 
+                 <form name="frmstepone" id="frmstepone" method="post">
+                          <input type="hidden" name="defaultaction" id="defaultaction"  />
+                          <input type="hidden" name="declineaction" id="declineaction" />
+                          <input type="hidden" name="accept" id="accept" value="0" />
+                          <input type="hidden" name="decline" id="decline" value="0" />
+                          </div>
+                          <?php endif;?>
+                                           
+                            
+                            <?php if($proefdruk->proof_status==1): ?>
+<div class="lft-sid-det">
+      <div class="lft-det1">Proefdruk status:</div>
+      <div class="rgt-det2">AFGEKEURD </div>
+      <div class="lft-det1">Datum - tijd:</div>
+      <div class="rgt-det2"> <?php $timestamp = strtotime($proefdruk->proof_approvedate);
+       echo date("d-m-Y",$timestamp);?></div>
+      <div class="lft-det1">Gecontroleerd door: </div>
+      <div class="rgt-det2"><?php echo $customeroptions->co_custname;?></div>
+    </div>
+                             
+                                         <?php else : ?>
+                            
+                          
+                            
+<br />
+                <?php
+                 if($proefdruk->proof_status==2): ?>
+
+                 <div class="lft-sid-det">
+      <div class="lft-det1">Proefdruk status:</div>
+      <div class="rgt-det2">GOEDGEKEURD </div>
+      <div class="lft-det1">Datum - tijd:</div>
+      <div class="rgt-det2"> <?php $timestamp = strtotime($proefdruk->proof_approvedate);
+       echo date("d-m-Y",$timestamp);?></div>
+      <div class="lft-det1">Gecontroleerd door: </div>
+      <div class="rgt-det2"><?php echo $customeroptions->co_custname;?></div>
+    </div>
+                <?php else: ?>
+
+
+
+
+
+
+                
+                              <!--
+
+
+
+                              <div id="errapprovedby" style="color:red; display:none;">Gelieve uw naam in te vullen</div>
+                                
+                                <div class="clr"></div> 
+                                <input type="text" style="width:98%; padding:2px; border:#666 solid 1px; " name="txtapprovedby" id="txtapprovedby" value="<?php echo $session->step1_name;?>" />
+                                <div class="clr"></div>
+                                <br /><br />
+                  <div>Uw proefdrukreactie</div>
+                                <br />
+                                <div class="clr"></div>
+                                <div style=" position: absolute;"> 
+                              <div id="erraccept" style="display:none; color:red;">Gelieve uw keuze voor controle kenbaar te maken</div>
+                                <span style="margin-top:8px;"><a href="#" class="accept" id="acceptbutton" onClick="doChoose('accept');"></a></span>
+                                <span style="margin-left:50px;"><a href="#" class="decline" id="declinebutton" onClick="doChoose('decline');"></a></span>
+                                <div class="clr"></div>
+                                </div>
+                                
+                                
+                               
+                                <div id="commentid" style="margin-top:50px;">
+                                  <div id="extra_file1" style="display:none;" > -->
+                                     <!--  <form method="post" enctype="multipart/form-data" action="/proefdruk/formupload/<?php echo base64_encode($proof_id);?>"> -->
+                               <!-- <span style="width: 300px;"> Upload uw aangepast ontwerp  </span>
+                <input type="file" name="file[]" /><BR>
+                <div id="appendfile"> </div>
+                 <a href="javascript:addField();" style="color:#7eae0d;"> Nog een veld toevoegen</a><BR>
+                 </div>
+                 
+                                  <BR><BR>
+                                <div>Opmerkingen:</div>
+                                <div class="clr"></div> 
+                              <div id="errcomments" style="color:red; display:none;">Gelieve uw opmerkingen in te vullen.</div>
+                                <div class="clr"></div>
+                                <textarea class="comment" rows="7" style="width:98%; padding:2px; border:#666 solid 1px;" name="txtcomments" id="txtcomments"><?php echo $session->step1_comment;?></textarea>
+                                </div>
+                                
+                                <div class="clr"></div>
+                                
+                                
+              
+                                <input type="submit" class="btn" id="submitid" onClick="return doSub();" value="VOLGENDE" style="float:right; background: none repeat scroll 0 0 #4f4f4f !important;display: block; font-size: 18px !important; border-radius: 5px;font-weight: bold;" />
+                                </div>
+                                  </div>      
+                 
+-->
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+<div class="link1">
+<div class="link1-list">1</div>
+<div class="link-txt">PROEFDRUK</div>
+</div>
+
+
+<div class="text-box">
+
+  <div id="errapprovedby" style="color:red; display:none; margin: 15px 0px -15px 3px;">Gelieve uw naam in te vullen</div>
+
+<input type="text" id="txtapprovedby" title="Vul hier uw naam in." class="masterTooltip" name="txtapprovedby" value="<?php if(isset($session->step1_name)){ echo $session->step1_name; } ?>" placeholder="Gecontroleerd door ..." class="text-box input" />
+
+</div>
+
+
+<div class="btn-con">
+  <div id="erraccept" style="display:none; color: red; margin: -10px 0px 12px 2px;">Gelieve uw keuze voor controle kenbaar te maken</div>
+<div class="button-1 masterTooltip" title="Gaat u akkoord met onze proefdruk?" id="acceptbutton" onClick="doChoose('accept');">AKKOORD</div>
+<div class="button-2 masterTooltip" title="Gaat u niet akkoord met onze proefdruk?" id="declinebutton" onClick="doChoose('decline');">NIET AKKOORD</div>
+</div>
+
+
+
+
+<div class="mytextarea" style="display:none;">
+<div class="text-are">
+  <div id="errcomments" style="color:red; display:none;   margin: 15px 0px -14px 2px;">Gelieve uw opmerkingen in te vullen.</div>
+  <div id="aanerrcomments" style="color:red; display:none;   margin: 15px 0px -14px 2px;">Gelieve uw maten en aantallen in te vullen</div>
+<?php if($proefdruk->proof_add_option==1){ ?>
+  <textarea class="text-are-input masterTooltip displaynone" name="txtaddcomments" id="txtaddcomments" placeholder="Gewenste maten en aantallen ..." title="Uw order bevat diverse maten kleding.
+  Gelieve hier de gewenste aantallen per maat in te vullen."><?php echo $session->step1_add_comment;?></textarea>
+  <?php } ?>
+   
+  <textarea class="text-are-input masterTooltip" name="txtcomments" id="txtcomments" placeholder="Eventuele opmerkingen..."><?php echo $session->step1_comment;?></textarea>
+</div>
+<!--<div class="text-bt">Geen bestand geselecteerd</div>
+<div class="btn-diff">
+BLADEREN
+</div>-->
+<div id="extra_file1" style="display:none;padding: 20px;" > 
+                     <!--  <form method="post" enctype="multipart/form-data" action="/proefdruk/formupload/<?php echo base64_encode($proof_id);?>"> -->
+<span style="  width: 300px; margin-top: 17px; display: inline-block; margin-bottom: 14px;"> Upload uw aangepast ontwerp  </span> 
+
+<input type="file" name="file[]" class="mb6 masterTooltip" title="Upload hier uw aangepast ontwerp."/><BR>
+<div id="appendfile"> </div>
+
+<a href="javascript:addField();" style="color:#7eae0d;"> Nog een veld toevoegen</a><BR>
+</div>
+
+
+<!--<input type="submit"  class="btn"  onClick="return doSub();" value="VOLGENDE" style="float:right; background: none repeat scroll 0 0 #4f4f4f !important;display: block; font-size: 18px !important; border-radius: 5px;font-weight: bold;" />-->
+
+<input type="submit" class="red-btn-1"  id="submitid" onClick="return doSub();" value="VOLGENDE" />
+</div>
+
+
+
+
+
+
+
+
+
+<div class="link2 mT35">
+<div class="link2-list">2</div>
+<div class="link2-txt">AFLEVERADRES</div>
+</div>
+
+<div class="link2">
+<div class="link2-list">3</div>
+<div class="link2-txt">BETALING</div>
+</div>
+
+<div class="link2">
+<div class="link2-list">4</div>
+<div class="link2-txt">BEVESTING</div>
+</div>
+
+
+
+
+<?php endif;?>
+                              
+                                <?php endif;?>
+
+
+
+
+
+
+</div>
+
+</div>
+<style>
+.fluidMedia {
+     float: left;
+    height: 0;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    position: relative;
+   
+}
+
+.fluidMedia iframe {
+    position: absolute;
+    top: 0; 
+    left: 0;
+	
+    width: 100%;
+    height: 100%;
+
+}
+.cont-right {
+    float: left;
+    margin: 0 0 0 -3px !important;
+    width: 572px;
+}
+</style>
+
+
+
+<div class="cont-right">
+
+<div class="fluidMedia">
+ <iframe src="/app/proefdruk/files/proefdruk/<?php echo $proefdruk->proof_file;?>" style="width:1034px; height:736px;" frameborder="0" ></iframe>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</form>

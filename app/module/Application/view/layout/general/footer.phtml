@@ -1,0 +1,60 @@
+
+<div class="mid_container">
+    	<div class="mid_container_bg">
+        	<div class="mid_container_topbg">
+            	<div class="mid_container_wrap">
+                	
+                    
+                    <div class="clr"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+	<div class="footer_wrap">
+    <div class="mid_container">
+    	<div class="mid_container_bg">
+        	<div class="mid_container_topbg">
+            	<div class="mid_container_wrap">
+                	
+                    
+                    <div class="clr"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    	<div class="footer_container">
+        	<div class="footer_top">
+           		<div class="clr"></div>
+            </div>
+            
+            <div class="footer_bottom">            
+            	
+                <div class="clr"></div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+$(document).ready(function() {
+
+// Tooltip only Text
+$('.masterTooltip').hover(function(e){
+	//hover code
+	var mousey = e.pageY - 14;
+	
+	   var title = $(this).attr('title');
+        $(this).data('tipText', title).removeAttr('title');
+        $('<span class="myspecialtooltip"></span>')
+        .text(title)
+        .insertAfter($(".left-sidebar")).css({top:mousey})
+        .fadeIn('slow');
+
+		}, function() {
+        // Hover out code
+        $(this).attr('title', $(this).data('tipText'));
+        $('.myspecialtooltip').remove();
+});
+});
+</script>
+</body>
+</html>

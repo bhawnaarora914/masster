@@ -1,0 +1,56 @@
+
+
+<div class="control-group">
+	<input type="hidden" id="proof_id" value="<?php echo $proof_id;?>" />
+					<label class="control-label" for="produktnummer" style="color:black;">Productnaam</label>
+					<div class="controls"><?php echo $this->formRow($optionnameform->get('proof_opt_name'));?> </div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="options" style="color:black;">Maxium opties</label>
+					<div class="controls"><?php echo $this->formRow($optionnameform->get('proof_opt_maxvalue'));?></div>
+				</div>
+		
+				
+			
+		
+		
+		<div class="control-group" style="margin-left:145px;">
+						
+						<table>
+							<tr> 
+								<td>Productoptie commentaar <br>(zichtbaar per product)   </td>
+							</tr>
+							<tr>
+								<td><?php echo $this->formRow($optionnameform->get('proof_opt_description'));?>  </td>
+							</tr>
+						</table>
+						
+					</div>
+				
+
+				<div class="separator"></div>
+				<table cellpadding="4" cellspacing="4"> <tr> 
+				<?php foreach($proofoptions as $value):?>
+				
+					<td> <input type="checkbox" class="checkbox" value="<?php echo $value;?>" name="o_value[]"  style="background:white;" /> </td>
+					<td> <?php echo $value;?></td>
+				
+	<?php endforeach;?>	
+	</tr>
+	</table>
+		
+		
+	
+		<input type="submit"  value="Opslaan en verder bewerken" name="opslaan1"><i></i> 		
+		<input type="submit"  value="Opslaan" name="opslaan"><i></i>		
+		<a class="glyphicons no-js eject" href="javascript:closeDiv('addoption');" style="margin-left:400px;">
+<i></i>
+Sluiten
+</a>
+
+		<!-- <button style="width: 200px;" class="btn btn-block btn-default" onclick="javascript:saveAddData('<?php echo $proof_id;?>'); return false;">
+						<i></i>
+					 Opslaan
+		</button> -->
+		<BR><BR>
+			<hr>

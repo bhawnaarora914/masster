@@ -1,0 +1,128 @@
+<?php $productoptions = $options;
+
+?>
+ <script>
+ 	function doSub(count)
+  {
+	<?php	foreach($productoptions as $values) :?>
+		
+			if(document.getElementById("<?php echo $values->o_id;?>").value=="")
+			{
+				//alert("Please enter valid value...");
+				document.getElementById("errsize<?php  echo $values->o_id;?>").style.display ="block";
+				document.getElementById("<?php echo $values->o_id;?>").style.backgroundColor ="#FFA6A6";
+				document.getElementById("<?php echo  $values->o_id;?>").focus();
+				return false;
+			}
+			else
+			{
+				document.getElementById("errsize<?php  echo $values->o_id;?>").style.display ="none";
+				document.getElementById("<?php  echo $values->o_id;?>").style.backgroundColor ="#FFFFFF";
+			}
+		
+		
+	<?php endforeach;?>
+	return true;
+	}
+  
+ </script>
+  <?php
+  if($msg): ?>
+  <script>
+  	alert("Artikelnaam <?php echo $name;?>,\n\nU heeft een bestelling geplaatst voor <?php echo $msg;?> stuks. U heeft nu <?php echo $current;?> stuks ingevuld, graag vragen wij u om de bestelde <?php echo $msg;?> stuks te verdelen over de beschikbare opties.");
+  </script>
+  <?php endif;?>
+  
+  <form name="frmsteptwo" id="frmsteptwo" method="post"> 
+               
+                    <div class="main fltright"><!--main-->
+                    	<div class="center">
+                            <h2>Beschikbare product opties</h2>
+                            <div class="clr"></div><br />
+                            <div style="background:#7eae0d; height:2px;"></div><br />
+                            <div class="txt">Gelieve hieronder uw keuze te maken. Indien geen waarde benodigd, 0 in te vullen in desbetreffend veld.<BR><BR></div>
+                            <div class="txt"> <?php echo $proefdruk->proof_global_option_comment;?><BR></div>
+                            <div class="clr"></div>
+                            <div class="sizebox">
+                         
+                             
+                             <?php if($proefdruk->proof_size_customer == 0 ):
+                             $show_new_name  = true;
+							 $prev_id  = 0;
+							 $proof_opt_name = '';
+						  	foreach($productoptions as $values) :
+								if($values->proof_opt_id != $prev_id) {
+								  	$show_new_name= true;
+								  }
+								
+							
+								 $prev_id = $values->proof_opt_id;
+								  if($show_new_name==true) {
+								  	echo  '<tr> <td colspan=2> 	<div style="margin-bottom:10px; margin-top:20px;"><b>'.$values->proof_opt_name.'</b></div></td></tr>';
+									  echo  '<tr> <td colspan=2> 	<div style="margin-bottom:10px;"><i>'.$values->proof_opt_description.'</i></div></td></tr>';
+									  echo  '<tr> <td colspan=2> 	<div style="margin-bottom:10px;"><i> Besteld aantal: '.$values->proof_opt_maxvalue.'</i></div></td></tr>';
+									 $show_new_name = false;
+								  }
+							   ?>
+							    <table cellpadding="4" cellspacing="5" >
+						   <tr><td>
+                            	<div class="" style="width:150px;"><?php echo $values->o_name;?>&nbsp;&nbsp;&nbsp;</div>
+                                </td>
+                                <td>
+                                <div class="box"><input type="text" name="<?php echo $values->o_id;?>" id="<?php echo $values->o_id;?>" style="float:left;" value="<?php 
+                                $ses_opt_name = "option_".$values->o_id;
+                                echo $session->$ses_opt_name;?>" />
+                                	&nbsp;<span style="color:red; display:none; line-height:20px; float:left;" id="errsize<?php echo $values->o_id;?>">&nbsp;Graag waarde ingeven. Indien geen waarde benodigd gelieve 0 in te vullen.</span>
+                                </div>
+                                <BR><BR>
+                                </td>
+                                </tr>
+						 	</table>
+                               
+                                <?php endforeach;?>
+                                <?php else : ?>
+									<div class="txt">Uw order bevat diverse maten kleding, geleive hieronder de gewenste aantallen per maat in te vullen.<BR></div>
+									<div class="clr"></div>
+
+                                	<BR>
+                                	<table cellpadding="4" cellspacing="5" >
+								   <tr><td>
+		                            	<div class="" style="width:150px;">Opmerkingen&nbsp;&nbsp;&nbsp;</div>
+		                                </td>
+		                                <td>
+		                                <div class="box">
+		                                	<textarea name="proof_size_customer_comment" rows="20" cols="110"><?php echo $proefdruk->proof_size_customer_comment;?></textarea>
+		                                	
+		                                	&nbsp;<span style="color:red; display:none; line-height:20px; float:left;" id="errsize<?php echo $values->o_id;?>">&nbsp;Graag waarde ingeven. Indien geen waarde benodigd gelieve 0 in te vullen.</span>
+		                                </div>
+		                                <BR><BR>
+		                                </td>
+		                                </tr>
+								 	</table>
+						 	
+                                	
+                                <?php endif;?>
+                                
+                                
+                                
+                           
+                                
+                            </div>
+                            <div style="background:#7eae0d; height:1px;"></div><br />
+                        </div>
+                        <div class="middle">
+		                        <div class="clr"></div>
+                                <input type="button" class="btn" value="Vorige" onclick="javascript:history.go(-1);"  style="float:left;" />
+                                <input type="submit" class="btn" value="Volgende" onclick="return doSub();" style="float:right;" />
+                        </div>
+                    	
+                        <!--main_cont_end-->
+                        
+                    </div><!--main-->
+                    </form>
+                    
+    <div class="clr"></div>
+                </div><!--container_wrap_end-->
+            </div><!--container_bg_end-->
+        </div><!--container_bgtop_end-->
+    </div><!--container_outer_end-->

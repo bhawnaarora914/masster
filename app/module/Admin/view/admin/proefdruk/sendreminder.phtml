@@ -1,0 +1,66 @@
+
+<h3 class="glyphicons show_thumbnails"><i></i> Proefdrukoverzicht</h3>
+<div class="separator"></div>
+
+<div class="innerLR">
+	<div class="widget widget-gray widget-body-white">
+		<div class="widget-head">
+			<h4 class="heading">Overzicht van proefdrukken</h4>
+		</div>
+		<div class="widget-body" style="padding: 10px 0;">
+			<table class="dynamicTable table  table-bordered table-condensed" >
+				<thead>
+					<tr>
+						<th>Productnummer</th>
+						<th>Klant naam</th>
+						<th>Klant Email</th>
+						<th>Proefdruk verzenddatum.</th>
+						<th>Proefdrukstatus</th>
+						<th>Versturen</th>
+						<th>Actie</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($proofs as $proof): ?>
+					<tr class="gradeX">
+						<td class="center"><a href="/app/proefdruk/admin/proefdruk/proofdetail/<?php echo $proof->proof_id;?>"> <?php echo $proof->proof_number;?> </a></td>
+						<td class="center"><?php echo $proof->proof_customer_name;?> </td>
+						<td class="center"><?php echo $proof->proof_customer_email;?></td>
+						<td class="center"><?php echo $proof->proof_senddate;?></td>
+						<td class="center">
+							<?php  switch($proof->proof_status) {
+													case 0:
+													echo "Pending";
+													break;
+													case 1 : ?>
+													<b style="color:red"> Afgewezen </b>
+												<?php 	break;
+													case 2:  ?>
+													<b style="color:green"> Goedgekeurd </b> 
+													<?php break;
+												}?></td>
+						<td class="center">
+							<button class="btn btn-block btn-primary btn-small" onclick="confirmation('Weet je het zeker?','/app/proefdruk/admin/proefdruk/sendproof/<?php echo $proof->proof_id; ?>?remove=true');">Versturen</button>
+</td>
+						<td class="center">
+						<a class="btn-action glyphicons pencil btn-success" href="/app/proefdruk/admin/proefdruk/newproefdruk/<?php echo $proof->proof_id;?>">
+						<i></i>
+					
+						</a>
+						
+						<a class="btn-action glyphicons remove_2 btn-danger"" href="javascript:confirmation('Weet je het zeker?','/app/proefdruk/admin/proefdruk/list/<?php echo $proof->proof_id; ?>?remove=true')">
+						<i></i>
+					
+						</a>
+							
+							
+						</td>
+					</tr>
+					<?php endforeach;?>
+					
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<br/>	

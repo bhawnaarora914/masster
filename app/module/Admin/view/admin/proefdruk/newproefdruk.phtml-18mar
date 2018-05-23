@@ -1,0 +1,472 @@
+<script>
+$(function() {
+$('#datepicker').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+$('#datepicker2').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+});
+</script>
+<style>
+form input {color:black;}
+</style>
+<?php
+$form = $this->form;
+$form->setAttribute('method', 'post');
+$form->setAttribute('class', 'form-horizontal');
+$form->setAttribute('id', 'validateSubmitForm');
+$form->prepare();
+echo $this->form()->openTag($form);?>
+<?php
+					if($msg=="wrongext"): ?><BR>
+					<div class="alert alert-error">
+					<button class="close" data-dismiss="alert" type="button">×</button>
+					<strong>Oh snap!</strong>
+					<B> U heeft bij het extra bestand een verkeerde extensie opgegeven. Alleen de extensie .pdf is toegestaan.</B>
+					</div>
+					 <BR>
+					<?php endif;?>
+<div class="widget-body" style="padding-bottom: 0;">
+		<div class="row-fluid" >
+			<div class="widget widget-4 uniformjs">
+	
+				<div class="widget-head"  style="margin-left:10px;">
+					<h4 class="heading">Algemene gegevens</h4>
+				</div>
+				<BR>
+					
+					
+					
+					
+				<div class="span6" style="margin-left:10px;">
+					<div style="margin: 0;">
+					<input type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" value="Opslaan en verder bewerken" name="opslaan1"><i></i> 		
+					<input type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" value="Opslaan" name="opslaan"><i></i>		
+					</div>
+				
+				
+					<BR><BR>
+				<div class="uniformjs">
+					
+					
+				
+				<div class="control-group">
+					<?php echo $this->formRow($form->get('proof_id'));?> 
+					<label class="control-label" for="proof_number">Proefdruknummer</label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_number'));?> </div>
+				</div>
+				
+				<div class="control-group">
+					
+					<label class="control-label" for="proof_number">Klantnaam</label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_customer_name'));?> </div>
+				</div>
+				
+				<div class="control-group">
+				
+					<label class="control-label" for="proof_number">Klant email</label>
+					<div class="controls">	<?php echo $this->formRow($form->get('proof_customer_email'));?> </div>
+				</div>
+				
+				
+					
+				
+				
+				
+				
+				<?php if($id==0 || $change_file =="true") :?>
+				<div class="control-group" >
+					<label class="control-label" for="produktnummer">Upload </label>
+					<div class="controls" ><?php 
+					$fileElement = $form->get('proof_file');
+					echo "<B>".$this->formElementErrors($fileElement)."</B>";
+					echo $this->formFile($fileElement);?>
+        			</div>
+				</div>
+				<?php endif;?>
+				
+				
+				
+				
+				<?php 
+				
+				
+				if($id!=0 && $change_file!="true"): // show the file ?>
+					<div class="control-group" style="margin-left:80px;">
+				<a class="glyphicons no-js folder_open" href="/app/proefdruk/files/proefdruk/<?php echo $proefdrukdata->proof_file;?>" >
+				Bestand: <i><?php echo $proefdrukdata->proof_file;?> </i>
+				</a>  
+				<BR><a href="/app/proefdruk/admin/proefdruk/newproefdruk/<?php echo $id;?>?change_file=true"> (Wijzigen) </a><BR><BR>
+				<input type="hidden" value="<?php echo $proefdrukdata->proof_file;?>" name="proof_file" />
+				</div>
+				<?php endif;?>
+
+				<div class="control-group" style="margin-left:140px;">
+					<?php echo $this->formRow($form->get('proof_add_option'));?>
+					Aantallen en maten vragen aan klant				
+				</div>
+				
+			
+				
+				<div class="control-group" style="margin-left:140px;">
+					<?php echo $this->formRow($form->get('proof_autoremind'));?>
+					Autoreminder gedurende 3 werkdagen
+				
+				</div>
+				
+				<!--<div class="control-group" style="margin-left:140px;">
+					<?php //echo $this->formRow($form->get('proof_size_customer'));?>
+					Maatvoering vragen aan klant
+				
+				</div>-->
+				<input type="hidden" name="proof_size_customer" value="0">
+				
+				<div class="widget widget-4 uniformjs" s>
+				<div class="widget-head">
+					<h4 class="heading">Betaalmogelijkheden</h4>
+				</div>
+				<BR>
+				<div class="control-group" >
+					<label class="control-label" for="produktnummer">Bedrag</label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_amount'));?> </div>
+				</div>
+				
+				
+		
+				<div class="control-group" style="margin-left:140px;">
+				<div class="separator"></div>
+				
+					<?php 
+					if($id!=0) {
+					
+						$paymethodsArr = explode(",",$proefdrukdata->proof_paymethod);
+						foreach($paymethodsArr as $values) {
+							switch($values) {
+								
+								case 1:
+									$paymethod['online'] = true;
+								break;
+								case 2:
+									$paymethod['bank'] = true;
+								break;
+								case 3:
+									$paymethod['factuur'] = true;
+								break;
+								case 4:
+									$paymethod['paid'] = true;
+								break;
+							}
+	
+						}
+						
+					}
+
+					?>
+					
+					<?php if($id==0): ?>
+						
+						<label class="checkbox" style="width: 120px;">
+							<input type="checkbox" class="checkbox" value="1" name="proof_paymethod[]" checked="checked"/>
+						Online betaling
+					</label>
+					
+					<label class="checkbox" style="width: 150px;">
+						<input type="checkbox" class="checkbox" value="2" name="proof_paymethod[]"  checked="checked"/>
+						Bankoverschrijving
+					</label>
+					
+					<label class="checkbox" style="width: 150px;">
+						<input type="checkbox" class="checkbox" value="3" name="proof_paymethod[]"  />
+						Betaling via factuur
+					
+					
+					<label class="checkbox" style="margin-top:5px; width: 120px;">
+						<input type="checkbox" class="checkbox"  value="4" name="proof_paymethod[]" />
+						Reeds betaald
+					</label>
+						
+						<?php else: ?>
+						<label class="checkbox" style="width: 120px;">
+							<input type="checkbox" class="checkbox" value="1" name="proof_paymethod[]"  <?php echo ($paymethod['online']==NULL ? '' : 'checked=checked');?>/>
+						Online betaling
+					</label>
+					
+					<label class="checkbox" style="width: 150px;">
+						<input type="checkbox" class="checkbox" value="2" name="proof_paymethod[]"  <?php echo ($paymethod['bank']==NULL ? '' : 'checked=checked');?>/>
+						Bankoverschrijving
+					</label>
+					
+					<label class="checkbox" style="width: 150px;">
+						<input type="checkbox" class="checkbox" value="3" name="proof_paymethod[]" <?php echo ($paymethod['factuur']==NULL ? '' : 'checked=checked');?> />
+						Betaling via factuur
+					
+					
+					<label class="checkbox" style="margin-top:5px; width: 120px;">
+						<input type="checkbox" class="checkbox"  value="4" name="proof_paymethod[]" <?php echo ($paymethod['paid']==NULL ? '' : 'checked=checked');?>/>
+						Reeds betaald
+					</label>
+						<?php endif;?>
+					
+				</div>
+		
+			<div class="widget-head">
+					<h4 class="heading">Datum</h4>
+			</div><BR>
+				<div class="control-group">
+					<label class="control-label" for="ProefdrukDatum">Datum</label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_date'));?> </div>
+				</div>
+				
+				
+			<div class="widget-head">
+					<h4 class="heading">Spoedbestelling</h4>
+				</div>
+				<BR>
+				<div class="control-group" style="margin-left:140px;">
+					<?php echo $this->formRow($form->get('proof_rushorder'));?>
+					Spoedorder
+				
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="produktnummer">Uiterste datum</label>
+					<div class="controls" styl><?php echo $this->formRow($form->get('proof_rushdate'));?> </div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="produktnummer">Uiterste akkoord tijd</label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_time'));?> </div>
+				</div>
+				
+				
+			
+				
+				
+				
+				
+				
+				
+				<div class="separator"></div>
+			</div>
+			
+			
+				
+				<div class="accordion" id="accordion3" style="margin-top:20px;">
+				<div class="accordion-group">
+					
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+						<B> Productopties (Klap uit voor meer informatie) </B>
+					</a>
+			    </div>
+			    
+		
+			    <?php if($edit_success!=NULL): ?>
+			    	<div id="collapseOne" class="accordion-body collapse in">
+			    <?php else: ?>
+			    		<div id="collapseOne" class="accordion-body collapse ">
+			    <?php endif;?>
+			    
+			    
+			    
+			    
+			      	<div class="accordion-inner" >
+						<div class="widget widget-4 uniformjs" style="background:#f5f5f5;">
+							
+				<?php if($id==0): ?>
+				<div class="control-group">
+					<label class="control-label" for="produktnummer" style="color:black;">Productnaam</label>
+					<div class="controls"><?php echo $this->formRow($optionnameform->get('proof_opt_name'));?> </div>
+				</div>
+					
+					<div class="control-group">
+					<label class="control-label" for="options" style="color:black;">Maximum opties</label>
+					<div class="controls"><?php echo $this->formRow($optionnameform->get('proof_opt_maxvalue'));?></div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="options" style="color:black;">Productmaat</label>
+					<div class="controls"><input type="text"  name="custom_name" id="custom_name" style="background:white; color:black;" />  </div>
+				</div>
+				<div class="control-group" style="margin-left:145px;">
+						
+						<table>
+							<tr> 
+								<td>Productoptie commentaar <br>(zichtbaar per product)   </td>
+							</tr>
+							<tr>
+								<td><?php echo $this->formRow($optionnameform->get('proof_opt_description'));?>  </td>
+							</tr>
+						</table>
+						
+					</div>
+					
+				<div class="separator"></div>
+				<table cellpadding="4" cellspacing="4"> <tr> 
+				<?php foreach($proofoptions as $value):?>
+			
+				<td> <input type="checkbox" class="checkbox" value="<?php echo $value;?>" name="o_value[]" 
+               	 style="background:red;" /> </td>
+						<td> <?php echo $value;?></td>	
+					<?php endforeach;?>	
+					</tr>
+			
+			
+			</table>
+			
+			
+			
+			
+				
+				
+				
+				
+				
+				
+				<div class="control-group">
+					<input type="submit"  value="Opslaan en verder bewerken" name="opslaan1"><i></i> 		
+				<input type="submit"  value="Opslaan" name="opslaan"><i></i>
+				 </div>
+				</div>
+				
+				
+				
+				<?php else: ?>
+				<a class="glyphicons no-js paperclip" href="javascript:addOptionForm('<?php echo $id;?>');">
+				<i><B> Nieuwe optie toevoegen </B></i>
+				</a>
+				<BR><BR>
+					
+					
+					
+		  		<div id="addoption"> </div>
+				
+				<?php foreach($option_names as $options): ?>
+				<a class="glyphicons no-js pencil" href="javascript:showOptionForm('<?php echo $options->proof_opt_id;?>');" id="">
+					<i></i>
+					<?php echo $options->proof_opt_name;?> bewerken
+					</a>
+					<BR>	
+					<?php endforeach;?>
+				
+					
+				<div id="productoption"> </div>
+				<?php endif;?>
+				
+				
+			</div>
+			     </div>
+			 </div>
+		</div>	
+			  	
+				</div>
+				
+
+
+
+
+
+				
+				
+		
+				
+				
+		
+		
+		
+		
+		
+
+				
+
+		
+		
+		<div class="accordion" id="accordion2" style="margin-bottom: -10;  ;">
+			
+			<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#three">
+				<B> Commentaar  </B>
+			</a>
+		</div>
+		<div id="three" class="accordion-body collapse">
+			<div class="accordion-inner">
+				<div class="control-group">
+					<label class="control-label" for="produktnummer"><B> Algemeen commentaar </B></label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_comment'));?> </div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="produktnummer"><B> Spoedbestelling commentaar (tevens dit commentaar in mail weergeven) </B></label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_rush_comment'));?> </div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="produktnummer"><B>Afleveradres commentaar</B></label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_adress_comment'));?> </div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="produktnummer"> <B>  Commentaar w.b.t. betaling </B></label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_pay_comment'));?> </div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="produktnummer"> <B>  Hoofdcommentaar productopties</B></label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_global_option_comment'));?> </div>
+				</div>
+				
+				
+				
+
+				
+
+				
+				
+			</div>
+		</div>
+	</div>
+	
+	
+			
+			<div class="accordion-group "  >
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapsetwo">
+					<b> Extra bestand toevoegen</b>
+				</a>
+			</div>
+			<div id="collapsetwo" class="accordion-body collapse">
+				<div class="accordion-inner">
+					<div class="control-group">
+					<label class="control-label" for="produktnummer" style="width: 160px;">Omschrijving document</label>
+					<div class="controls"><?php echo $this->formRow($form->get('proof_extra_name'));?> </div>
+				</div>
+				<BR>	
+			<div class="control-group">
+				
+					<label class="control-label" for="produktnummer" style="width: 160px; margin-left:-10px;">Upload Extra bestand</label>
+					<div class="controls" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php 
+					$fileElement = $form->get('proof_extra_file');
+					echo "<B>".$this->formElementErrors($fileElement)."</B>";
+					echo $this->formFile($fileElement);?>
+        			</div>
+				</div>
+				
+				<?php if($id!=0): // show the file ?>
+					
+					<?php foreach($extra_files as $files):?>
+					<a class="glyphicons no-js folder_open" href="/app/proefdruk/files/proefdruk/<?php echo $files->file_filename;?>" target="_blank">
+					<input type="hidden" name="proof_extra_file" value="<?php echo $files->file_filename;?>" />
+					Bestand: <i><?php echo $files->file_filename;?> <a href="/app/proefdruk/admin/proefdruk/deletefile/<?php echo $files->file_id;?>?ref=<?php echo $id;?>" title="Bestand verwijderen"> (x) </a></i>
+					</a>  <BR>
+					<?php endforeach;?>
+				<?php endif;?>
+				
+			</div>
+				</div>
+			</div>
+		</div>
+	
+	
+			
+	
+
+	<div class="form-actions" style="margin: 0;">
+		<input type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" value="Opslaan en verder bewerken" name="opslaan1"><i></i> 		
+		<input type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" value="Opslaan" name="opslaan"><i></i>		
+	</div>
+<?php echo $this->form()->closeTag(); ?>

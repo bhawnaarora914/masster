@@ -1,0 +1,67 @@
+<?php
+$name = '';
+$description = '';
+$productsize = '';
+$arr_options = array();
+foreach($optionwithvalues as $values) {
+	$name = $values->proof_opt_name;
+	$description = $values->proof_opt_description;
+	
+	$arr_options[]= $values->o_name;
+	if($values->custom==1) {
+		$productsize = $values->o_name;
+	}
+}
+?>
+<form method="post"> 
+<div id="productoption1">
+	<input type="hidden" value="<?php echo $id;?>" id="proof_opt_id" />
+						<div class="control-group">
+						<label class="control-label" for="produktnummer">Productnaam</label>
+						<div class="controls"><input type="text" id="proof_opt_name" value="<?php echo $name;?>" /> </div>
+					</div>
+					
+					
+					<div class="control-group">
+						<label class="control-label" for="produktnummer">Omschrijving</label>
+						<div class="controls"><textarea id="proof_opt_description"><?php echo $description;?></textarea> </div>
+					</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="produktnummer">Productmaat</label>
+					<div class="controls"><input type="text" id="custom_name" /> </div>
+				</div>
+				
+				<?php foreach($options as $values) : ?>
+					<?php if(in_array($values,$arr_options)) :?>
+						<label class="checkbox">  <?php echo $values;?>
+						<input type="checkbox" class="checkbox" value="<?php echo $values;?>" name="o_name" checked="checked" id="o_name"/>
+						</label>
+					<?php else: ?>
+					   <label class="checkbox">  <?php echo $values;?>
+						<input type="checkbox" class="checkbox" value="<?php echo $values;?>" name="o_name" id="o_name" />
+						</label>
+					<?php  endif;?>
+				<?php endforeach;?>
+				
+		
+		
+			<?php foreach($customoptions as $custom): ?>
+						 <label class="checkbox">  <?php echo $custom->o_name;?>
+						 <?php if($custom->custom_checked==1): ?>
+						 	<input type="checkbox" class="checkbox" value="<?php echo $custom->o_id;?>" name="custom_checked" id="custom_name" checked="checked" />
+						 	<?php else: ?>
+						 	<input type="checkbox" class="checkbox" value="<?php echo $custom->o_id;?>" name="custom_checked" id="custom_name" />
+						 	<?php endif;?>
+						</label>
+						<?php endforeach;?>
+				
+				
+				<div class="control-group">
+					
+					<div class="controls"><a href="javascript:saveData();"> Opslan</a> </div>
+				</div>
+							
+						
+	</div>
+	</form>

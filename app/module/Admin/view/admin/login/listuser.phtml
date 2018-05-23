@@ -1,0 +1,37 @@
+
+			<BR><BR><table class="table table-bordered table-primary table-condensed">
+				<thead>
+					<tr>
+						<th>Gebruikersnaam</th>
+						<th>Actie</th>
+				
+						
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($users as $user): ?>
+					<tr class="gradeX">
+						<td class="left"> <?php echo $user->username;?></td>
+						
+						<td class="left">
+						<a class="btn-action glyphicons pencil btn-success" href="/app/proefdruk/administrator/adduser?user_id=<?php echo $user->user_id;?>">
+						<i></i>
+					
+						</a> 
+						
+						<a class="btn-action glyphicons remove_2 btn-danger" href="javascript:confirmation('Weet je het zeker?','/app/proefdruk/administrator/listuser?user_id=<?php echo $user->user_id;?>')">
+						<i></i>
+						</a>
+						</td>
+						
+					
+					<?php endforeach;?>
+		
+		
+					
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<br/>	

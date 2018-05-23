@@ -1,0 +1,192 @@
+	
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Factory Groep Proefdruk: <?php if(isset($this->layout()->proof_number)) { echo $this->layout()->proof_number; } ?> </title>
+
+<link href="/app/proefdruk/css/temp2style.css" rel="stylesheet" type="text/css" />
+<!--<link href="/app/proefdruk/css/style.css" rel="stylesheet" type="text/css" />
+<link href="/app/proefdruk/css/skin.css" rel="stylesheet" type="text/css" />-->
+<!--[if IE 6]><style type="text/css">.bannerpic{margin-bottom:-3px;}</style><![endif]-->
+<style>
+.myvolgendeButoon{background:black;color:white;}
+.myspecialtooltip {
+	margin-left:9px;
+	margin-top:-10px;
+	/*display:none;*/
+	position: absolute;
+    padding: 1em;
+	/*border:1px solid #333;*/
+	background-color:#161616;
+	border-radius:5px;
+	color:#fff;
+	width:17% !important;
+	font-size:12px Arial;
+}
+.myspecialtooltip::after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    display: block;
+    width: 0;
+    top: 12px;
+    left: -10px;
+    border-color: transparent #161616;
+    border-width: 10px 10px 10px 0;
+}
+
+</style>
+
+
+
+
+<script type="text/javascript">
+
+ function saveImageAs (imgOrURL) {
+    if (typeof imgOrURL == 'object')
+      imgOrURL = imgOrURL.src;
+    window.win = open (imgOrURL);
+    setTimeout('win.document.execCommand("SaveAs")', 500);
+  }
+  
+  
+  
+</script>
+
+<!--FOR FANCYBOX START-->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="/app/proefdruk/js/fancybox/fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
+	<script type="text/javascript" src="/app/proefdruk/js/fancybox/fancybox/jquery.fancybox-1.3.1.js"></script>
+	<script type="text/javascript" src="/app/proefdruk/js/gen_validatorv4.js"> </script> 
+	<link rel="stylesheet" type="text/css" href="/app/proefdruk/js/fancybox/fancybox/jquery.fancybox-1.3.1.css" media="screen" />
+ 	<link rel="stylesheet" href="/app/proefdruk/js/fancybox/style.css" />
+	<script type="text/javascript">
+	function openfancybox()
+	{
+		$(document).ready(function() {
+
+			$("#various1").fancybox({
+				'titlePosition'		: 'inside',
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none'
+			});
+
+		});
+		//$(#various1).click();
+		document.getElementById('various1').click();
+	}
+	</script>
+    <style>
+	#fancybox-outer{
+	border:10px solid #666;
+	}
+	</style>
+<!--FOR FANCYBOX END-->
+</head>
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        	<a id="various1" href="#inline1" style="display:none" title="">Inline</a>
+        <div style="display: none;">
+            <div id="inline1" style="width:450px;height:auto; line-height:20px;overflow:hidden;">
+                <h2 style="width:100%; color:#FFF; padding:5px; background:#FF0000; font-size:15px; text-align:center;">BELANGRIJKE INFORMATIE</h2>
+                <p style="text-align:center;">Via ons digitaal proefdruk systeem kunt u makkelijk en snel uw digitale proefdruk controleren.
+Wij vragen u om uw proefdruk ALLEEN via ons systeem te accepteren of af te keuren.</p></br></br>
+				<p style="text-align:center;"><strong>Wijzigingen per mail kunnen wij niet verwerken.</strong></p></br></br>
+                <p style="text-align:center;">Bij een eventuele afkeuring maken we eerst een nieuwe digitale proefdruk.</p>
+                <p style="text-align:center;">Pas nadat wij uw goedkeuring en gewenste betaalmethode hebben ontvangen starten we de productie.</p>
+            </div>
+        </div>
+	
+	<!--
+            <div class="nav">
+            	<ul style="margin-left:10px;" style="font-family: Arial;">
+                          <?php  if($this->layout()->actionName=="index"):?>
+                          	<li  style="border-left:1px solid white; border-right: 1px solid white; height: 40px; margin-top:-13px; "> 
+                          		<BR>
+                          		<span style="font-weight:bold; font-size:12px; font-family: Arial; color :black;"> Proefdruk controle </span>
+                          		
+                          		</li>
+                          	<?php else : ?>
+                          		<li  style="border-left:1px solid white; border-right: 1px solid white; height: 40px; margin-top:-13px; "> <BR> Proefdruk controle  </li>
+                          	<?php endif;?>
+                            	<?php if($this->layout()->options==true): ?>
+                            	<?php  if($this->layout()->actionName=="options"):?>
+	                          	<li  style="  height: 40px; margin-top:-13px; color:black; border-right: 1px solid white; ">  <BR>Productopties </b></li>
+	                          	<?php else : ?>
+	                          		<li  style=" border-right: 1px solid white; height: 40px; margin-top:-13px; "> <BR>Productopties </li>
+	                          	<?php endif;?>
+                            	<?php endif;?>
+                            	
+                            	
+                            	<?php  if($this->layout()->actionName=="step2"):?>
+		                     <li  style="   height: 40px; margin-top:-13px; color:black; border-right: 1px solid white; "> 
+		                     	 <BR> Afleveradres</b></li>
+		                          	
+		                          	<?php else : ?>
+		                          		<li  style=" height: 40px; margin-top:-13px;  border-right: 1px solid white;"> <BR>Afleveradres </li>
+		                          	<?php endif;?>
+		                          	
+		                          	
+		                          	
+		                          	<?php  if($this->layout()->actionName=="step4"):?>
+		                          	 <li  style="  height: 40px; margin-top:-13px; color:black; "> <BR> Betaling</b></li>
+		                          	<?php else : ?>
+		                          		<li  style=" height: 40px; margin-top:-13px; "> <BR>Betaling </li>
+		                          	<?php endif;?>
+		                          	
+		                          	
+		                          	<?php  if($this->layout()->actionName=="confirmation"):?>
+		                          	<li  style="  border-right: 1px solid white; height: 40px; margin-top:-13px; color:black; "> <BR>Bevestiging</b></li>
+		                          	<?php else : ?>
+		                          			<li  style="border-left:1px solid white; border-right: 1px solid white; height: 40px; margin-top:-13px; "> <BR>Bevestiging </li>
+		                          	<?php endif;?>
+                          	
+                            </ul>
+                <div class="clr"></div>
+            </div>-->
+          
+   
+  
+							
+
+
+
+
+<div class="header">
+	<div class="inner-header">
+		<div class="logo-header">
+			<img src="/app/proefdruk/img/logofactorygroep.png" alt=""/>
+			
+		</div>
+		<div class="deatil-top">
+			<div class="deatil-left">Datum:</div>
+			<div class="deatil-right"><?php $timestamp = strtotime($this->layout()->proof_date); echo date("d-m-Y",$timestamp);?> </div>
+			<div class="deatil-left">Proefdruknummer:</div>
+			<div class="deatil-right"><?php echo $this->layout()->proof_number;?></div>
+			<div class="deatil-left">Totaalbedrag: </div>
+			<div class="deatil-right">EUR <?php echo $this->layout()->proof_amount;?></div>
+		</div>
+	</div>
+</div>
+<div  class="cont-back">
+<div class="cont-back-inner">
+<div id="main-container">

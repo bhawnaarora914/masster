@@ -1,0 +1,145 @@
+<html>
+<head>
+<title>Untitled Document</title>
+</head>
+<?php $proefdruk = $this->proefdruk; ?>
+
+<body style="border:2px solid #99CC00; font-size:12px;padding:10px;font-family:Arial,Calibri;">
+<p><a href="#" target="_blank"><img border="0" width="500" height="" src="http://proefdruk.factorygroep.nl/app/proefdruk/img/mail-logo2.jpg" alt="Factory Groep" /></a> 
+  </p>
+<table border="1" width="500" cellspacing="0" cellpadding="2" style="font-family:Arial,Calibri; font-size: 12px;">
+	<tr>
+    	<th align="left" colspan="2" style="padding:3px; background:#CCCCCC;">Klant gegevens</th>
+    </tr>
+  <tr>
+    <td>Klant :</td>
+    <td><?php echo $proefdruk->proof_customer_name;?></td>
+  </tr>
+  <tr>
+    <td>Email:</td>
+    <td><?php echo $proefdruk->proof_customer_email;?></td>
+  </tr>
+  <tr>
+    <td>Proof sent:</td>
+    <td><?php echo $proefdruk->proof_senddate;?></td>
+  </tr>
+  <tr>
+    <td>Auto send reminder mails during 3 working days:</td>
+    <td><?php  if($proefdruk->proof_autoremind==1) { echo "Ja";} else { echo "Nee";}?></td>
+  </tr>
+  <tr>
+    <td>1st reminder :</td>
+    <td><?php echo $proefdruk->remind_date_1;?></td>
+  </tr>
+  <tr>
+    <td>2nd reminder :</td>
+    <td><?php echo $proefdruk->remind_date_2;?></td>
+  </tr>
+  <tr>
+    <td>3rd reminder :</td>
+    <td><?php echo $proefdruk->remind_date_2;?></td>
+  </tr>
+  <tr>
+    <td>Spoedorder :</td>
+    <td><?php  if($proefdruk->proof_rushorder==1) { echo "Ja";} else { echo "Nee";}?></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+	<tr>
+    	<th align="left" colspan="2" style="padding:3px; background:#CCCCCC;">Proof Data</th>
+    </tr>
+  <tr>
+    <td>Akkoord-Afgekeurd:</td>
+    <td><?php echo $this->approved;?></td>
+  </tr>
+  
+
+  
+  <?php if(@$user_files!=NULL):  $teller = 0;?>
+  	<?php foreach(@$user_files as $u_files): $teller++; ?>
+	  <tr>
+	    <td> Bestand <?php echo $teller;?></td>
+	    <td><a href="http://proefdruk.factorygroep.nl/app/proefdruk/files/customer/<?php echo @$u_files->filename;?>"> <?php echo @$u_files->filename;?></a></td>
+	  </tr>
+  <?php endforeach;?>
+  
+  <?php endif;?>
+  
+  <tr>
+    <td>Approval date/time:</td>
+    <td><?php echo $proefdruk->proof_approvedate;?></td>
+  </tr>
+  <tr>
+    <td>Approved by:</td>
+    <td><?php echo $customeroptions->co_custname;?></td>
+  </tr>
+  <tr>
+    <td>Opmerkingen:</td>
+    <td><?php echo $customeroptions->co_comment;?></td>
+  </tr>
+  <tr>
+    <td>Payment method:</td>
+    <td><?php echo $this->payname;?></td>
+  </tr>
+  <tr>
+    <td>Bedrag:</td>
+    <td><?php echo $proefdruk->proof_amount;?></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <?php
+  if($proefdruk->proof_status!=1): ?>
+  <tr><th align="left" colspan="2" style="padding:3px; background:#CCCCCC;">Afleveradres</th></tr>
+  <tr>
+    <td>bedrijf:</td>
+    <td><?php echo @$customerdelivery->cd_company;?></td>
+  </tr>
+  <tr>
+    <td>naam:</td>
+    <td><?php echo @$customerdelivery->cd_name;?></td>
+  </tr>
+  <tr>
+    <td>Straat:</td>
+    <td><?php echo @$customerdelivery->cd_street;?></td>
+  </tr>
+  <tr>
+    <td>Nummer:</td>
+    <td><?php echo @$customerdelivery->cd_housenumber;?></td>
+  </tr>
+  <tr>
+    <td>Postcode:</td>
+    <td><?php echo @$customerdelivery->cd_postal;?></td>
+  </tr>
+  <tr>
+    <td>Woonplaats: </td>
+    <td><?php  echo @$customerdelivery->cd_place;?></td>
+  </tr>
+  <tr>
+    <td>Land:</td>
+    <td><?php echo @$customerdelivery->cd_country;?></td>
+  </tr>
+  <tr>
+    <td>Telephonenummer:</td>
+    <td><?php echo @$customerdelivery->cd_phone;?></td>
+  </tr>
+  
+  
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <?php endif;?>
+  <tr><th align="left" valign="top" colspan="2" style="padding:3px; background:#CCCCCC;">Product opties</th></tr>
+  <tr>
+    <td>Option:</td>
+    <td><?php echo $customeroptions->co_add_comment;?></td>
+  </tr>
+  <tr>
+   
+    <td colspan="2" valign="top"> 
+    	<BR> <BR>
+    	
+    	
+    </td>
+  </tr>
+</table>
+
+  <div style="font-size:12px;"><p></p>
+  </div>
+</body>
+</html>

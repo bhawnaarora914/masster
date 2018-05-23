@@ -1,0 +1,140 @@
+<?php
+$name = '';
+$description = '';
+$productsize = '';
+$arr_options = array();
+foreach($optionwithvalues as $values) {
+	$name = $values->proof_opt_name;
+	$description = $values->proof_opt_description;
+	$proof_opt_maxvalue = $values->proof_opt_maxvalue;
+	$arr_options[]= $values->o_name;
+	if($values->custom==1) {
+		$productsize = $values->o_name;
+	}
+}
+?> 
+<form method="post"> 
+<div id="productoption1"><BR>
+	
+
+
+				<input type="hidden" value="<?php echo $proof_opt_id;?>" id="proof_opt_id" />
+						<div class="control-group">
+						<label class="control-label" for="produktnummer">Productnaam </label>
+						<div class="controls"><input type="text" id="proof_opt_name" style="background:white; color:black;" value="<?php echo $name;?>" /> </div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="produktnummer">Maxium opties </label>
+						<div class="controls"><input type="text" id="proof_opt_maxvalue"  name="proof_opt_maxvalue" style="background:white; color:black;"  value="<?php echo $proof_opt_maxvalue;?>" /> </div>
+					</div>
+					
+					
+					<div class="control-group" style="margin-left:145px;">
+						
+						<table>
+							<tr> 
+								<td>Productoptie commentaar <br>(zichtbaar per product)   </td>
+							</tr>
+							<tr>
+								<td><textarea id="proof_opt_description" style="background:white; color:black;"><?php echo $description;?></textarea> </td>
+							</tr>
+						</table>
+						
+					</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="produktnummer">Productmaat</label>
+					<div class="controls"><input type="text" id="custom_name" style="background:white; color:black;" />    <img src="/app/proefdruk/img/add.png" style=" position: absolute; margin-top:9px;">
+						
+						<a href="javascript:void(0);" onclick="javascript:saveData('<?php echo $proof_opt_id;?>'); return false;"  style="margin-left:20px; color:black; margin-top:-20px;">  Maat toevoegen </a> </div>
+				</div>
+				<div class="control-group" style="margin-left:20px;">
+					<table cellpadding="4" cellspacing="4" > <tr> 
+				<?php foreach($options as $values) : ?>
+					<?php if(in_array($values,$arr_options)) :?>
+						<td>   <?php echo $values;?></td>
+						<td>  <input type="checkbox" class="checkbox" value="<?php echo $values;?>" name="o_name" checked="checked" id="o_name"  style="background:white;"/> </td>
+						
+					<?php else: ?>
+					   <td>  <?php echo $values;?> </td> 
+						<td> <input type="checkbox" class="checkbox" value="<?php echo $values;?>" name="o_name" id="o_name"  style="background:white;" /> </td>
+					
+					<?php  endif;?>
+				<?php endforeach;?>
+				</tr>
+		
+		
+		</table>
+				
+		
+		<table cellpadding="4" cellspacing="4" > <tr> 
+			<?php
+			$teller = 0;
+			 foreach($customoptions as $custom): $teller ++; ?>
+						 <td> <?php echo $custom->o_name;?> </td> 
+						 <?php if($custom->custom_checked==1): ?>
+						   <td> 	<input type="checkbox" class="checkbox" value="<?php echo $custom->o_id;?>" name="custom_checked" id="custom_name" checked="checked" /> </td>
+						 	<?php else: ?>
+						 	<td>  <input type="checkbox" class="checkbox" value="<?php echo $custom->o_id;?>" name="custom_checked" id="custom_name" /> </td>
+						 	<?php endif;?>
+						
+						<?php endforeach;?>
+					</tr>
+					</table>
+		
+		</div>
+				
+				
+			
+			
+	</div>
+	<hr>
+	<div class="control-group">
+					
+			
+			<div id="success" style="display:none;"> 				
+				<div class="alert alert-success">
+				<button class="close" data-dismiss="alert" type="button">×</button>
+				<strong>Bezig met opslaan...</strong>
+				</div>
+			</div>		
+			
+			<div id="finished" style="display:none;"> 				
+				<div class="alert alert-success">
+				<button class="close" data-dismiss="alert" type="button">×</button>
+				<strong>Opgeslagen!!</strong>
+				</div>
+			</div>		
+			<BR>
+				<table  width="750">
+					<tr>
+						<td align="center" width="33%">
+							
+							<a class="glyphicons no-js refresh" href="javascript:void(0);" onclick="javascript:saveData('<?php echo $proof_opt_id;?>'); return false;">
+							<i></i>
+							Updaten
+							</a>
+							
+							
+							
+					</td>
+					<td align="center" width="33%"> 
+						<a class="glyphicons no-js eject" href="javascript:closeDiv('productoption');" style=" font-weight: bold;">
+						<i></i>
+						Sluiten
+						</a>
+				</td>
+				<td align="center" width="33%"><a class="glyphicons no-js circle_remove" href="javascript:confirmation('Weet u zeker dat u deze item wilt verwijderen?','/app/proefdruk/admin/proefdruk/deleteoption/<?php echo $id;?>?proof_opt_id=<?php echo $proof_opt_id;?>')" style=" color:red; font-weight: bold;">
+<i></i>
+Verwijderen
+</a></td>
+					</tr>
+				</table>
+
+					
+
+
+
+	</div>
+	</form>

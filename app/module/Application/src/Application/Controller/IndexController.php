@@ -1,0 +1,571 @@
+<?php namespace Application\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+use Zend\Session\Container;
+use Application\Form\FileUploadForm;
+use Application\Model\Emailtemplate;
+use Zend\Validator\File\Extension;
+
+class IndexController extends AbstractActionController
+{
+	protected $proefdrukoptionvaluesTable;
+	protected $proefdrukoptionnameTable;
+	protected $proefdrukTable;
+	protected $customeroptionsTable;
+	protected $customerdeliveryTable;
+	protected $useruploadedfileTable;
+	protected $extrafileTable;
+	private $session;
+	
+	public function __construct()
+	{
+		$this->session = new Container("proefdruk");
+		$this->session->setExpirationSeconds(3600);
+		
+	}
+
+	public function saveOptions($proof_id,$session)
+	{
+		$options = $this->getProefdrukOptionNameTable()->getOptionsWithValues(0,false,$proof_id);
+		foreach($options as $values) {
+			// create the ses key
+			$ses_opt_name = "option_".$values->o_id;
+			$this->getProefdrukOptionValuesTable()->setOptionValue($values->o_id,$session->$ses_opt_name);
+		}
+	}
+	
+	
+	public function getCustomerDeliveryTable()
+	{
+	        if (!$this->customerdeliveryTable) {
+	            $sm = $this->getServiceLocator();
+	            $this->customerdeliveryTable = $sm->get('Application\Model\Customerdelivery');
+	        }
+	        return $this->customerdeliveryTable;
+	 }
+	
+	public function getExtrafileTable()
+	{
+	        if (!$this->extrafileTable) {
+	            $sm = $this->getServiceLocator();
+	            $this->extrafileTable = $sm->get('Admin\Model\ExtrafileTable');
+	        }
+	        return $this->extrafileTable;
+	 }
+	
+	public function getProefdrukOptionValuesTable()
+	{
+	        if (!$this->proefdrukoptionvaluesTable) {
+	            $sm = $this->getServiceLocator();
+	            $this->proefdrukoptionvaluesTable = $sm->get('Admin\Model\ProefdrukOptionValuesTable');
+	        }
+	        return $this->proefdrukoptionvaluesTable;
+	 }
+	
+	public function getcustomerOptionsTable()
+	{
+	        if (!$this->customeroptionsTable) {
+	            $sm = $this->getServiceLocator();
+	            $this->customerOptionsTable = $sm->get('Application\Model\Customeroptions');
+	        }
+	        return $this->customerOptionsTable;
+	 }
+	
+	
+	public function getProefdrukOptionNameTable()
+	{
+	        if (!$this->proefdrukoptionnameTable) {
+	            $sm = $this->getServiceLocator();
+	            $this->proefdrukoptionnameTable = $sm->get('Admin\Model\ProefdrukOptionNameTable');
+	        }
+	        return $this->proefdrukoptionnameTable;
+	 }
+	
+	public function getProefdrukTable()
+	{
+	        if (!$this->proefdrukTable) {
+	            $sm = $this->getServiceLocator();
+	            $this->proefdrukTable = $sm->get('Admin\Model\ProefdrukTable');
+	        }
+	        return $this->proefdrukTable;
+	 }
+	
+	public function getUseruploadedFileTable()
+	{
+	        if (!$this->useruploadedfileTable) {
+	            $sm = $this->getServiceLocator();
+	            $this->useruploadedfileTable = $sm->get('Application\Model\Useruploadedfile');
+	        }
+	        return $this->useruploadedfileTable;
+	 }
+	
+	
+	
+	public function reminderAction()
+	{ 
+		$Emailtemplate = new Emailtemplate();
+        foreach($this->getProefdrukTable()->fetchAll(array('proof_autoremind'=>1,'proof_status'=>0)) as $values) {
+
+        	 if($values->proof_remind_counter<3) {
+        	 	$proefdruk = $this->getProefdrukTable()->getProefdruk($values->proof_id);
+        	 	$firstreminderDate = $values->remind_date_1;
+
+        	 	$now = date("Y-m-d H:i:s");
+				$newdate = date("Y-m-d H:i:s",strtotime("6/4/2015"));						
+				$datetime1 = date_create($now);
+				$datetime2 = date_create($newdate);
+				$interval = date_diff($datetime2, $datetime1);
+				$days = $interval->format('%d');
+
+				
+
+				if(($days==3) && ($values->proof_remind_counter!=0)){
+					$mailmessage =  $Emailtemplate->setTemplate("reminder2",array('proefdruk'=>$proefdruk));
+				}
+				else if(($days==7) && ($values->proof_remind_counter!=0)){
+					$mailmessage =  $Emailtemplate->setTemplate("reminder3",array('proefdruk'=>$proefdruk));
+				}
+				else if($values->proof_remind_counter==0){
+					$mailmessage =  $Emailtemplate->setTemplate("reminder",array('proefdruk'=>$proefdruk));
+				}
+
+				// $mailmessage =  $Emailtemplate->setTemplate("reminder",array('proefdruk'=>$proefdruk));
+				$Emailtemplate->SendMail($proefdruk->proof_customer_email,"Proefdruk herinnering - ". $proefdruk->proof_number,$mailmessage,$this->getServiceLocator()->get('config'));
+        	 	$counter = $values->proof_remind_counter+1;
+				
+        	 	switch($counter) {
+					case 1:
+						$this->getProefdrukTable()->updateProefdruk(array('proof_remind_counter'=>$values->proof_remind_counter+1,'remind_date_1'=>date("Y-m-d H:i:s")),$values->proof_id);
+					break;
+					case 2:
+						$this->getProefdrukTable()->updateProefdruk(array('proof_remind_counter'=>$values->proof_remind_counter+1,'remind_date_2'=>date("Y-m-d H:i:s")),$values->proof_id);
+					break;
+					case 3:
+						$this->getProefdrukTable()->updateProefdruk(array('proof_remind_counter'=>$values->proof_remind_counter+1,'remind_date_3'=>date("Y-m-d H:i:s")),$values->proof_id);
+					break;
+        	 	}
+        	 	
+        	 }
+			
+        }
+	
+	}
+	
+	
+	// multiupload
+	 public function formuploadAction()
+	{
+		
+		$response = $this->getResponse();
+        $response->setStatusCode(200);
+		$proof_id =  (int) base64_decode($this->params()->fromRoute('id', 0));
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			
+			$nonFile = $request->getPost()->toArray();
+			$File    = $this->params()->fromFiles('file');
+			for($i=0; $i<count($File);$i++) {
+				// prefill the form data gain
+	            $data = array_merge(
+	                 $nonFile, //POST
+	                 array('file'=> $File[$i]['name']) //FILE...
+	             );
+				 $this->getUseruploadedFileTable()->saveUploadedfile(array('proof_id'=>$proof_id,'filename'=>$File[$i]['name']));
+				 $adapter = new \Zend\File\Transfer\Adapter\Http(); 
+				 $adapter->setDestination( getcwd().'/public/files/customer/'); // current working directory
+				 $adapter->receive($File[$i]['name']);
+				
+			}
+			 return $this->redirect()->toUrl("/app/proefdruk/proefdruk/index/".base64_encode($proof_id)."?upload=true");
+		}
+		 return $response;
+		 
+	}
+	
+	
+	
+	
+	
+	
+	// the first step ...
+	public function indexAction()
+	{	
+
+		$proof_id =  (int) base64_decode($this->params()->fromRoute('id', 0));
+		$proefdruk = $this->getProefdrukTable()->getProefdruk($proof_id);
+		$request = $this->getRequest();
+		$options = $this->getProefdrukOptionNameTable()->getOptionsWithValues(0,false,$proof_id);
+
+
+		$customeroptions = 0;
+		if($proefdruk->proof_status!=0) {
+			$customeroptions = $this->getcustomerOptionsTable()->getCustomerOption($proof_id,true);
+		}
+		if($request->isPost()) {
+			if($request->getPost("decline")==1) {
+			
+				// send the mail template to the customer
+				$Emailtemplate = new Emailtemplate();
+				$mailmessage =  $Emailtemplate->setTemplate("decline_proof",array('name'=>$proefdruk->proof_customer_name,'proof_number'=>$proefdruk->proof_number,'description'=>$request->getPost("txtcomments")));
+				$Emailtemplate->SendMail($proefdruk->proof_customer_email,"Proefdruk afgekeurd - ". $proefdruk->proof_number,$mailmessage,$this->getServiceLocator()->get('config'));
+				$custoptData = array(
+		            'co_custname' =>  $request->getPost("txtapprovedby"),
+		            'co_comment'=>$request->getPost("txtcomments"),
+		            'proof_id' =>$proof_id
+		        	);
+					
+				$nonFile = $request->getPost()->toArray();
+				$File    = $this->params()->fromFiles('file');
+					for($i=0; $i<count($File);$i++) {
+						// prefill the form data gain
+			            $data = array_merge(
+			                 $nonFile, //POST
+			                 array('file'=> $File[$i]['name']) //FILE...
+			             );
+						 $this->getUseruploadedFileTable()->saveUploadedfile(array('proof_id'=>$proof_id,'filename'=>$File[$i]['name']));
+						 $adapter = new \Zend\File\Transfer\Adapter\Http(); 
+						 $adapter->setDestination( getcwd().'/proefdruk/files/customer/'); // current working directory
+						 $adapter->receive($File[$i]['name']);
+						}
+					
+					
+				$this->getcustomerOptionsTable()->saveCustomerOption($custoptData); 
+				// Send the mail template to the admin
+				$mailmessage =  $Emailtemplate->setTemplate(
+							"admin_overview",array('proefdruk'=>$proefdruk,
+							'customeroptions'=>$this->getcustomerOptionsTable()->getCustomerOption($proof_id,true),
+							'payname'=>'',
+							'customerdelivery'=>$this->getCustomerDeliveryTable()->getCustomerDelivery($proof_id,true),
+							'options'=>$options,
+							'user_files'=>$this->getUseruploadedFileTable()->getUploadedfiles($proof_id),
+							 'approved'=>"Afgekeurd")
+							);
+
+				$config = $this->getServiceLocator()->get('config');
+				$Emailtemplate->SendMail($config['mailsettings']['admin_to'],"Proefdruk afgekeurd - ". $proefdruk->proof_number,$mailmessage,$this->getServiceLocator()->get('config'),true,$proefdruk->proof_file);
+				// Update the proefdruk
+				$this->getProefdrukTable()->updateProefdruk(array('proof_status'=>1),$proof_id);// set to declined.
+				return $this->redirect()->toUrl("/app/proefdruk/proefdruk/index/".base64_encode($proof_id));
+
+			}
+			$this->session->step1_is_approved  = $request->getPost("accept");
+			$this->session->step1_name = $request->getPost("txtapprovedby");
+			$this->session->step1_comment  = $request->getPost("txtcomments");
+			if($request->getPost("txtaddcomments")!=""){
+				$this->session->step1_add_comment  = $request->getPost("txtaddcomments");				
+			}
+			else{
+				$this->session->step1_add_comment = "";
+			}
+			$this->session->step1_done=true;
+			// check whenever there are productoptions
+			// otherwise send to other page
+			if(count($options)>0 || $proefdruk->proof_size_customer == 1) {
+				 return $this->redirect()->toUrl("/app/proefdruk/proefdruk/options/".base64_encode($proof_id));
+			} else {
+				return $this->redirect()->toUrl("/app/proefdruk/proefdruk/step2/".base64_encode($proof_id));
+			}
+			
+				
+		}
+		return new ViewModel(
+			array('proof_id'=>$proof_id,
+				  'proefdruk'=>$proefdruk,
+				  'session'=>$this->session,
+				  'customeroptions'=>$customeroptions,
+				  'files'=>$this->getExtrafileTable()->getExtrafile($proof_id),
+				  'uploaded'=>$this->getRequest()->getQuery("upload")
+		));
+	}
+	
+	
+	
+	
+	// the productoptions
+	
+	public function optionsAction()
+	{
+		$proof_id =  (int) base64_decode($this->params()->fromRoute('id', 0));
+		$options = $this->getProefdrukOptionNameTable()->getOptionsWithValues(0,false,$proof_id);
+		$proefdruk = $this->getProefdrukTable()->getProefdruk($proof_id);
+		$request = $this->getRequest();
+		$aantal_opties = 0;
+		if($request->isPost()) {
+			
+			if($proefdruk->proof_size_customer == 1 ) {
+				$proof_size_customer_comment = htmlspecialchars($request->getPost("proof_size_customer_comment"));
+				$this->getProefdrukTable()->updateProefdruk(array('proof_size_customer_comment'=>$proof_size_customer_comment),$proof_id);
+			} else {
+				// save them in the session and give the o_id the name for the session
+				$proof_arr = array();
+				foreach($options as $values) {
+					$ses_opt_name = "option_".$values->o_id;
+					$this->session->$ses_opt_name =  $request->getPost($values->o_id);
+					$option_name = $this->getProefdrukOptionNameTable()->getOptionName($values->proof_opt_id,false);
+					$proof_arr[$values->proof_opt_id] += $request->getPost($values->o_id);
+					
+					
+				}
+				
+				$aantal_opties_backend = 0;
+				foreach($this->getProefdrukOptionNameTable()->getOptionName($proof_id,true) as $values) {
+					$aantal_opties_backend+= $values->proof_opt_maxvalue;
+					if($proof_arr[$values->proof_opt_id] != $values->proof_opt_maxvalue) {
+						return $this->redirect()->toUrl("/app/proefdruk/proefdruk/options/".base64_encode($proof_id)."?msg=".$values->proof_opt_maxvalue."&current=".$proof_arr[$values->proof_opt_id]."&name=".$values->proof_opt_name);
+						exit;
+					}
+				}
+				$this->session->option_done = true;
+				
+			}
+			
+			return $this->redirect()->toUrl("/app/proefdruk/proefdruk/step2/".base64_encode($proof_id));
+			
+			
+		}
+		
+		return new ViewModel(
+			array('proof_id'=>$proof_id,
+				  'options'=>$options,
+				  'session'=>$this->session,
+				  'msg'=>$this->getRequest()->getQuery("msg"),
+				  'current'=>$this->getRequest()->getQuery("current"),
+				  'name'=>$this->getRequest()->getQuery("name"),
+				   'proefdruk'=>$this->getProefdrukTable()->getProefdruk($proof_id)
+		));
+	}
+	
+	
+	
+	
+	
+	// step2 ...
+	public function step2Action()
+	{
+		$proof_id =  (int) base64_decode($this->params()->fromRoute('id', 0));
+		// in case step 1 is not finished
+		// go back to step 1
+		if(!$this->session->step1_done)  {
+			return $this->redirect()->toUrl("/app/proefdruk/proefdruk/index/".base64_encode($proof_id));
+		}
+		$request = $this->getRequest();
+		if($request->isPost()) {
+			$this->session->step2_company = $request->getPost("company");
+			$this->session->step2_tav = $request->getPost("attn");
+			$this->session->step2_straat = $request->getPost("street");
+			$this->session->step2_huisnr = $request->getPost("number");
+			$this->session->step2_postcode = $request->getPost("postcode");
+			$this->session->step2_plaats = $request->getPost("city");
+			$this->session->step2_land = $request->getPost("country");
+			$this->session->step2_telefoon = $request->getPost("telephone");
+			$this->session->step2_done = true;
+			
+			return $this->redirect()->toUrl("/app/proefdruk/proefdruk/step3/".base64_encode($proof_id));
+				
+			
+		}
+		return new ViewModel(
+			array('proof_id'=>$proof_id,
+				  'session'=>$this->session,
+				  'proefdruk'=>$this->getProefdrukTable()->getProefdruk($proof_id)
+		));
+		
+		
+	}
+
+
+	// step 3 the agreements 
+	public function step3Action()
+	{
+		$proof_id =  (int) base64_decode($this->params()->fromRoute('id', 0));
+		/*
+		 * NOT NECESERRY, but you dont know how the customer's are..
+		 * In case needed just uncomment... :-)
+		if(!$this->session->step1_done || !$this->session->step2_done)  {
+			return $this->redirect()->toRoute('application', array(
+                    'controller' => 'proefdruk',
+                    'action' =>  'index',
+                    'id'=>$proof_id
+                ));
+		}
+		$request = $this->getRequest();
+			if($request->isPost()) {
+				if(!$this->session->step3_accepted) {
+					$proefdruk = $this->getProefdrukTable()->getProefdruk($proof_id);
+					$Emailtemplate = new Emailtemplate();
+					$mailmessage =  $Emailtemplate->setTemplate("proof_agree",array('name'=>$proefdruk->proof_customer_name,'proof_number'=>$proefdruk->proof_number));
+					$Emailtemplate->SendMail($proefdruk->proof_customer_email,"Proefdruk akkoord - ". $proefdruk->proof_number,$mailmessage,$this->getServiceLocator()->get('config'));
+				
+		}
+				
+			}
+		*/
+			$this->session->step3_accepted = true;
+			return $this->redirect()->toUrl("/app/proefdruk/proefdruk/step4/".base64_encode($proof_id));
+		
+	}
+
+
+	// step 4 
+	
+	public function step4Action()
+	{
+		$proof_id =  (int) base64_decode($this->params()->fromRoute('id', 0));
+		$IP=$_SERVER['REMOTE_ADDR'];
+		$url = 'http://api.hostip.info/country.php?ip='.$IP;
+		 $ch_rech = curl_init();                    // Initialiser cURL.
+      curl_setopt($ch_rech, CURLOPT_URL, $url);  // Indiquer quel URL récupérer
+      curl_setopt($ch_rech, CURLOPT_HEADER, 0);  // Ne pas inclure l'header dans la réponse.
+      ob_start();                                // Commencer à 'cache' l'output.
+      curl_exec($ch_rech);                       // Exécuter la requète.
+      curl_close($ch_rech);                      // Fermer cURL.
+      $country =  ob_get_contents();              // Sauvegarder le 'cache' dans la variable $Results.
+      ob_end_clean();
+		
+		if(!$country) {
+			$country = "NL";
+		}
+		
+		if(!$this->session->step3_accepted)  {
+			return $this->redirect()->toUrl("/app/proefdruk//proefdruk/index/".base64_encode($proof_id));
+		}
+
+		$request = $this->getRequest();
+		if($request->isPost()) {
+			$paymethod=  (int) $request->getPost("paymentmethod");
+			
+			if($paymethod==0) {
+				
+				return $this->redirect()->toUrl("/app/proefdruk/proefdruk/index/".base64_encode($proof_id));
+			} else {
+				return $this->redirect()->toUrl("/app/proefdruk/proefdruk/complete/".base64_encode($proof_id)."?pay_method=".$paymethod);
+			}
+		}
+		
+		// assign to view
+		return new ViewModel(
+			array('proof_id'=>$proof_id,
+				  'session'=>$this->session,
+				  'proefdruk'=>$this->getProefdrukTable()->getProefdruk($proof_id),
+				  'country'=>$country
+		));
+		
+		
+	}
+	
+	
+	public function completeAction()
+	{
+		
+		$proof_id =  (int) base64_decode($this->params()->fromRoute('id', 0));
+		$response = $this->getResponse();
+      	$paymethod = $this->getRequest()->getQuery("pay_method");
+		$pay_name = "";
+		$completed = false;
+		$proefdruk = $this->getProefdrukTable()->getProefdruk($proof_id);
+		$Emailtemplate = new Emailtemplate();
+		// check if there other steps were completed...
+		if(!$this->session->step3_accepted || !$this->session->step1_done || !$this->session->step2_done) {
+			return $this->redirect()->toUrl("/app/proefdruk/proefdruk/index/".base64_encode($proof_id));
+		} else {
+			
+			// Update tha product options
+			$custoptData = array(
+            'co_custname' =>  $this->session->step1_name,
+            'co_comment'=>$this->session->step1_comment,
+            'co_add_comment'=>$this->session->step1_add_comment,
+            'co_paymethod'=>$paymethod,
+            'proof_id' =>$proof_id
+        	);
+			
+			// the delevery data
+        	$deliveryData = array(
+        	'cd_company'=>$this->session->step2_company,
+        	'cd_name'=>$this->session->step2_tav,
+        	'cd_street'=>$this->session->step2_straat,
+        	'cd_housenumber'=>$this->session->step2_huisnr,
+        	'cd_postal'=>$this->session->step2_postcode,
+        	'cd_place'=>$this->session->step2_plaats,
+        	'cd_country'=>$this->session->step2_land,
+        	'cd_phone'=>$this->session->step2_telefoon,
+        	'proof_id'=>$proof_id
+			);
+			switch ($paymethod) {
+				// online
+				case 1:
+					$completed = true;
+					$pay_name = "Online bankieren";
+					$mailmessage =  $Emailtemplate->setTemplate("onlinepayment",array('name'=>$proefdruk->proof_customer_name,'proof_number'=>$proefdruk->proof_number));
+					$Emailtemplate->SendMail($proefdruk->proof_customer_email,"Proefdruk akkoord - ". $proefdruk->proof_number,$mailmessage,$this->getServiceLocator()->get('config'));
+					
+				break;
+				// bankoverschrijving	
+				case 2:
+					$completed = true;
+					$pay_name = "Bankoverschrijving";
+					$mailmessage =  $Emailtemplate->setTemplate("bankpayment",array('name'=>$proefdruk->proof_customer_name,'proof_number'=>$proefdruk->proof_number,'amount'=>$proefdruk->proof_amount));
+					$Emailtemplate->SendMail($proefdruk->proof_customer_email,"Proefdruk akkoord - ". $proefdruk->proof_number,$mailmessage,$this->getServiceLocator()->get('config'));
+					
+				break;
+				// reeds betaald	
+				case 3:
+					$completed = true;
+					$pay_name = "Reeds betaald";
+					$mailmessage =  $Emailtemplate->setTemplate("alreadypaid",array('name'=>$proefdruk->proof_customer_name,'proof_number'=>$proefdruk->proof_number));
+					$Emailtemplate->SendMail($proefdruk->proof_customer_email,"Proefdruk akkoord - ". $proefdruk->proof_number,$mailmessage,$this->getServiceLocator()->get('config'));
+					
+				break;
+				// via factuur	
+				case 4:
+					$completed = true;
+					$pay_name = "Factuur";
+					$mailmessage =  $Emailtemplate->setTemplate("factuur",array('name'=>$proefdruk->proof_customer_name,'proof_number'=>$proefdruk->proof_number));
+					$Emailtemplate->SendMail($proefdruk->proof_customer_email,"Proefdruk akkoord - ". $proefdruk->proof_number,$mailmessage,$this->getServiceLocator()->get('config'));
+					
+				break;
+	
+			}
+			// go back to the proof
+			if($completed==true) {
+				
+				// save the options and set the status on completed
+				$this->saveOptions($proof_id,$this->session);
+				$this->getcustomerOptionsTable()->saveCustomerOption($custoptData);
+				$this->getCustomerDeliveryTable()->saveCustomerDelivery($deliveryData);
+				// send the proefdruk to the admin
+				$options = $this->getProefdrukOptionNameTable()->getOptionsWithValues(0,false,$proof_id);
+				if(count($options)==0) {
+					$options = NULL;
+				}
+				$mailmessage =  $Emailtemplate->setTemplate(
+									"admin_overview",array('proefdruk'=>$proefdruk,
+									'customeroptions'=>$this->getcustomerOptionsTable()->getCustomerOption($proof_id,true),
+									'payname'=>$pay_name,
+									'customerdelivery'=>$this->getCustomerDeliveryTable()->getCustomerDelivery($proof_id,true),
+									'options'=>$options,
+									'approved'=>'Goedgekeurd'
+									)
+								);
+				
+				
+				
+																									
+				$config = $this->getServiceLocator()->get('config');
+				$Emailtemplate->SendMail($config['mailsettings']['admin_to'],"Proefdruk akkoord - ". $proefdruk->proof_number,$mailmessage,$this->getServiceLocator()->get('config'),true,$proefdruk->proof_file);
+			
+				// update the proefdruk
+				$this->getProefdrukTable()->updateProefdruk(array('proof_status'=>2),$proof_id);
+				$this->session->getManager()->getStorage()->clear('proefdruk');
+				return $this->redirect()->toUrl("/app/proefdruk/proefdruk/index/".base64_encode($proof_id));
+				$response->setStatusCode(200);
+	 			return $response;
+			
+			}
+		}
+
+	
+	}
+	
+
+}

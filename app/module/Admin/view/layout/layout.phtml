@@ -1,0 +1,33 @@
+<?php 
+if($this->layout()->actionName!="print") {
+echo $this->partial('admin/header', array('vr' => 'zf2'));	
+} ?>
+			
+		<?php  
+		if($this->layout()->username==NULL) {
+			echo $this->content;
+		} else {
+			echo '<div id="content">'.$this->content.'</div>'; 
+		}
+		?>
+		
+<?php  
+if($this->layout()->actionName!="print") {
+echo $this->partial('admin/footer', array('vr' => 'zf2')); 
+}
+			
+		
+
+
+
+
+ 	
+	
+		
+		
+			
+			
+			
+			
+		
+

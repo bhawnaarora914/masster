@@ -1,0 +1,25 @@
+	<div id="login">
+	<form class="form-signin" method="post"  id="validateSubmitForm">
+		<div class="widget widget-4">
+			<div class="widget-head">
+				<h4 class="heading">Factorygroep</h4>
+			</div>
+		</div>
+		<h2 class="glyphicons unlock form-signin-heading"><i></i> Inloggen</h2>
+		<div class="uniformjs">
+			<div class="control-group">
+					<label class="control-label" for="username">Username</label>
+					<div class="controls"><input class="span12" id="username" name="username" type="text" style="width: 300px;" /></div>
+				</div>
+			<div class="control-group">
+					<label class="control-label" for="password">Password</label>
+					<div class="controls"><input class="span12" id="password" name="password" type="password" style="width: 300px;" /></div>
+				</div>
+		</div>
+		<button class="btn btn-large btn-primary" type="submit">Inloggen</button>
+	</form>
+</div>		<?php if($valid_login==false) : ?>
+		<div class="alert alert-error">
+			Uw inloggegevens zijn onjuist.
+		</div>
+		<?php endif;?>

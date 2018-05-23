@@ -1,0 +1,148 @@
+<!DOCTYPE html> 
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
+<head>
+	<title>Factorygroep Proefdruksysteem</title>
+	<!-- Meta -->
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	
+	<!-- Bootstrap -->
+	<link href="/app/proefdruk/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/app/proefdruk/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
+	<!-- DataTables -->
+	<link rel="stylesheet" media="screen" href="/app/proefdruk/theme/scripts/DataTables/media/css/DT_bootstrap.css" />
+	<!-- Bootstrap Extended -->
+	<link href="/app/proefdruk/bootstrap/extend/jasny-bootstrap/css/jasny-bootstrap.min.css" rel="stylesheet">
+	<link href="/app/proefdruk/bootstrap/extend/jasny-bootstrap/css/jasny-bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="/app/proefdruk/bootstrap/extend/bootstrap-wysihtml5/css/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet">
+	
+	<!-- Select2 -->
+	<link rel="stylesheet" href="/app/proefdruk/theme/scripts/select2/select2.css"/>
+	
+	<!-- JQueryUI v1.9.2 -->
+	<link rel="stylesheet" href="/app/proefdruk/theme/scripts/jquery-ui-1.9.2.custom/css/smoothness/jquery-ui-1.9.2.custom.min.css" />
+	
+	<!-- Glyphicons -->
+	<link rel="stylesheet" href="/app/proefdruk/theme/css/glyphicons.css" />
+	
+	<!-- Bootstrap Extended -->
+	<link rel="stylesheet" href="/app/proefdruk/bootstrap/extend/bootstrap-select/bootstrap-select.css" />
+	<link rel="stylesheet" href="/app/proefdruk/bootstrap/extend/bootstrap-toggle-buttons/static/stylesheets/bootstrap-toggle-buttons.css" />
+	
+	<!-- Uniform -->
+	<link rel="stylesheet" media="screen" href="/app/proefdruk/theme/scripts/pixelmatrix-uniform/css/uniform.default.css" />
+
+	<!-- JQuery v1.8.2 -->
+	<script src="/app/proefdruk/theme/scripts/jquery-1.8.2.min.js"></script>
+	<script src="/app/proefdruk/js/common.js"></script>
+	<!-- Modernizr -->
+	<script src="/app/proefdruk/theme/scripts/modernizr.custom.76094.js"></script>
+	<script type="text/javascript" src="/app/proefdruk/js/gen_validatorv4.js"> </script> 
+	<!-- MiniColors -->
+	<link rel="stylesheet" media="screen" href="/app/proefdruk/theme/scripts/jquery-miniColors/jquery.miniColors.css" />
+	
+	<!-- Theme -->
+	<link rel="stylesheet" href="/app/proefdruk/theme/css/style.min.css?1363272430" />
+	
+	<!-- LESS 2 CSS -->
+	<script src="/app/proefdruk/theme/scripts/less-1.3.3.min.js"></script>
+	
+</head>
+<body>
+	
+	<!-- Start Content -->
+	<div class="container-fluid fluid <?php echo  ($this->layout()->username == NULL ? '' : 'login');?>" style="width: 100%; margin-top:0px; ">
+		<?php
+		 if($this->layout()->username!=NULL):?>
+		<div class="navbar main"> 
+			<a href="/app/proefdruk/admin/proefdruk/index" class="appbrand"><span>Factorygroep <span>Proefdruk</span></span></a>
+			
+						<button type="button" class="btn btn-navbar">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+			</button>
+						
+			<ul class="topnav pull-right">
+
+				<li class="account">
+										<a href="/app/proefdruk/administrator/logout" data-toggle="dropdown"class="glyphicons logout lock"><span class="hidden-phone text"><?php echo ucfirst($this->layout()->username);?></span><i></i></a>
+										
+										<ul class="dropdown-menu pull-right">
+					
+						<li>
+							<span>
+								<a class="btn btn-default btn-small pull-right" style="padding: 2px 10px; background: #fff;" href="/app/proefdruk/administrator/logout">Uitloggen</a>
+							</span>
+						</li>
+					</ul>
+					
+									</li>
+			</ul>
+		</div>
+		
+				<div id="wrapper">
+		<div id="menu" class="hidden-phone" >
+			<div id="menuInner">
+				
+				
+					
+					<ul> 
+					<li class="heading"><span>Algemeen</span></li>
+					<?php  if($this->layout()->actionName=="index") : ?>
+								<li class="glyphicons sort"><a href="/app/proefdruk/admin/proefdruk/index"><i></i><span><B>Dashboard</B></span></a></li>
+							<?php else: ?>
+									<li class="glyphicons sort"><a href="/app/proefdruk/admin/proefdruk/index"><i></i><span>Dashboard</span></a></li>
+							<?php endif;?>
+					<?php  if($this->layout()->actionName=="newproefdruk") : ?>
+								<li class="glyphicons sort"><a href="/app/proefdruk/admin/proefdruk/newproefdruk"><i></i><span><B>Nieuwe proefdruk</B></span></a></li>
+							<?php else: ?>
+									<li class="glyphicons sort"><a href="/app/proefdruk/admin/proefdruk/newproefdruk"><i></i><span>Nieuwe proefdruk</span></a></li>
+						<?php endif;?>
+						<!--
+						<?php  if($this->layout()->actionName=="list" || $this->layout()->actionName=="proofdetail") : ?>
+								<li class="glyphicons sort"><a href="/app/proefdruk/admin/proefdruk/list"><i></i><span><B>Proefdruk overzicht</B></span></a></li>
+							<?php else: ?>
+									<li class="glyphicons sort"><a href="/app/proefdruk/admin/proefdruk/list"><i></i><span>Proefdruk overzicht</span></a></li>
+						<?php endif;?> -->
+                        
+						<?php  if($this->layout()->actionName=="adduser") : ?>
+								<li class="glyphicons sort"><a href="/app/proefdruk/administrator/adduser"><i></i><span><B>Gebruikers toevoegen</B></span></a></li>
+							<?php else: ?>
+									<li class="glyphicons sort"><a href="/app/proefdruk/administrator/adduser"><i></i><span>Gebruikers toevoegen</span></a></li>
+						<?php endif;?>
+						
+						<?php  if($this->layout()->actionName=="listuser") : ?>
+								<li class="glyphicons sort"><a href="/app/proefdruk/administrator/listuser"><i></i><span><B>Gebruikers beheren</B></span></a></li>
+							<?php else: ?>
+									<li class="glyphicons sort"><a href="/app/proefdruk/administrator/listuser"><i></i><span>Gebruikers beheren</span></a></li>
+						<?php endif;?>
+				
+					<ul> 
+						<li class="heading"><span>Zoeken</span></li>
+						<li class="glyphicons list"><form method="get" name="searchproductshead" id="searchproductshead" action="/app/proefdruk/admin/proefdruk/list"><input type="hidden" name="filter" value="5" /><input type="text" name="productkeyword" id="productkeyword" style="width:170px; margin:20px 0 0 20px;" value="<?php if(isset($_GET['productkeyword'])) echo $_GET['productkeyword'];?>" placeholder="zoek..." onblur="$('#searchproductshead').submit();"></form></li>
+					</ul>
+						
+					<ul> 
+					<li class="heading"><span>Filters</span></li>
+				
+								<!--<li class="glyphicons list"><a href="/app/proefdruk/admin/proefdruk/list"><i></i><span>Alle proefdrukken</span></a></li>
+								<li class="glyphicons list"><a href="/app/proefdruk/admin/proefdruk/list?filter=2"><i></i><span>Overzicht goedgekeurd</span></a></li>
+								<li class="glyphicons list"><a href="/app/proefdruk/admin/proefdruk/list?filter=1"><i></i><span>Overzicht afgekeurd</span></a></li>
+								<li class="glyphicons list"><a href="/app/proefdruk/admin/proefdruk/list?filter=0"><i></i><span>Niet gereageerd</span></a></li>
+								<li class="glyphicons list"><a href="/app/proefdruk/admin/proefdruk/list?filter=3"><i></i><span>Onverzonden</span></a></li>
+								<li class="glyphicons list"><a href="/app/proefdruk/admin/proefdruk/list?filter=4"><i></i><span>Reactie te laat</span></a></li>-->
+                                <li class="glyphicons list"><a href="/app/proefdruk/admin/proefdruk/list?filter=3"><i></i><span>Onverzonden</span></a></li>
+								<li class="glyphicons list"><a href="/app/proefdruk/admin/proefdruk/list?filter=0&days=60"><i></i><span>LEADS 60 DAGEN</span></a></li>
+					<!--
+				</ul>
+				<li class="heading"><span>Ordersysteem</span></li>
+					<li class="glyphicons list"><a href="http://system2.factorygroep.nl/administrator" target="_blank"><i></i><span>Login Ordersysteem</span></a></li>
+					
+				</ul>-->
+			</div>
+		</div>
+		<?php endif;?>

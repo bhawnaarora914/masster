@@ -1,0 +1,173 @@
+
+<h3 class="glyphicons show_thumbnails"><i></i> Proefdrukoverzicht</h3>
+<div class="separator"></div>
+
+<div class="innerLR">
+	<div class="widget widget-gray widget-body-white">
+		<div class="widget-head">
+			<h4 class="heading">Overzicht van proefdrukken</h4>
+		</div>
+		<div class="widget-body" style="padding: 10px 0;">
+	<ul class="breadcrumb">
+	
+	
+	<?php  if($filter==NULL) : ?>
+		<li>  <B>  Overzicht alle proefdrukken </B></li>
+	<?php else: ?>
+			<li> <a href="/app/proefdruk/admin/proefdruk/list">  Overzicht alle proefdrukken</a></li>
+	<?php endif;?>
+	
+	<?php if (!empty($productkeyword)):?>
+	<li class="divider"></li>
+		<li>  <B>  Overzicht alle proefdrukken [Zoeken: <?php echo $productkeyword;?>]</B></li>
+	<?php endif;?>
+	
+	
+	<li class="divider"></li>
+		<?php  if($filter==1) : ?>
+		<li>  <B>  Overzicht afgekeurd </B></li>
+	<?php else: ?>
+			<li> <a href="/app/proefdruk/admin/proefdruk/list?filter=1">  Overzicht afgekeurd</a></li>
+	<?php endif;?>
+	
+	
+	
+	
+	
+	<li class="divider"></li>
+	<?php  if($filter==2) : ?>
+		<li>  <B>  Overzicht goedgekeurd </B></li>
+	<?php else: ?>
+			<li> <a href="/app/proefdruk/admin/proefdruk/list?filter=2">  Overzicht goedgekeurd</a></li>
+	<?php endif;?>
+	
+	<li class="divider"></li>
+	<?php  if($filter=="0") : ?>
+		<li>  <B>  Niet gereageerd </B></li>
+	<?php else: ?>
+			<li> <a href="/app/proefdruk/admin/proefdruk/list?filter=0">  Niet gereageerd </a></li>
+	<?php endif;?>
+	
+	<li class="divider"></li>
+	<?php  if($filter==3) : ?>
+		<li>  <B>  Onverzonden</B></li>
+	<?php else: ?>
+			<li> <a href="/app/proefdruk/admin/proefdruk/list?filter=3">  Onverzonden</a></li>
+	<?php endif;?>
+	
+	<li class="divider"></li>
+	<?php  if($filter==4) : ?>
+		<li>  <B>  Reactie te laat</B></li>
+	<?php else: ?>
+			<li> <a href="/app/proefdruk/admin/proefdruk/list?filter=4">  Reactie te laat</a></li>
+	<?php endif;?>
+	
+	<li class="divider"></li>
+	<?php  if($filter==4) : ?>
+		<li>  <B>  LEADS 60 DAGEN</B></li>
+	<?php else: ?>
+			<li> <a href="/app/proefdruk/admin/proefdruk/list?filter=0&days=60">  LEADS 60 DAGEN</a></li>
+	<?php endif;?>
+	
+	
+
+	
+</ul>
+
+<!-- <input type="hidden" name="productsearchkeyword" id="productsearchkeyword" value="<?php echo $productkeyword;?>" /> -->
+
+			<form method="post" name="reminder"> 
+			<table class="dynamicTable table  table-bordered table-condensed" >
+				<thead>
+					<tr>
+						<th>Productnummer</th>
+						<th>Klant naam</th>
+						<th>Klant Email</th>
+						<th>Price</th>
+						<th>Proefdruk verzenddatum.</th>
+						<th>Proefdrukstatus</th>
+						<th>Proefdruk keuring</th>
+						<th>Versturen</th>
+						<th>Actie</th>
+						<th>Reminder </th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($proofs as $proof):
+					
+					 ?>
+					<tr class="gradeX">
+						<td class="left"><a href="/app/proefdruk/admin/proefdruk/proofdetail/<?php echo $proof->proof_id;?>"> <?php echo $proof->proof_number;?> </a></td>
+						<td class="left"><?php echo $proof->proof_customer_name;?> </td>
+						<td class="left"><?php echo $proof->proof_customer_email;?></td>
+						<td class="left"><?php echo $proof->proof_amount;?></td>
+						<td class="left"><?php echo $proof->proof_senddate;?></td>
+						<td class="left">
+							<?php  switch($proof->proof_status) {
+													case 0:
+													echo "Geen reactie";
+													break;
+													case 1 : ?>
+													<b style="color:red"> Afgewezen </b>
+												<?php 	break;
+													case 2:  ?>
+													<b style="color:green"> Goedgekeurd </b> 
+													<?php break;
+												}?></td>
+						<td class="left"><?php if($proof->proof_status==2){ echo $proof->proof_approvedate; }?></td>
+						<td class="left">
+							<?php 
+							if($filter!=""){
+								if($productkeyword!=""){ ?>
+<a href="javascript:void(0);" onclick="confirmation('Weet je het zeker?','/app/proefdruk/admin/proefdruk/sendproof/<?php echo $proof->proof_id."?filter=".$filter."&productkeyword=".$productkeyword; ?>');">Versturen</a>
+
+<?php 								}
+								else{
+									?>
+<a href="javascript:void(0);" onclick="confirmation('Weet je het zeker?','/app/proefdruk/admin/proefdruk/sendproof/<?php echo $proof->proof_id."?filter=".$filter ; ?>');">Versturen</a>
+								<?php }
+							}
+							else{
+?>
+<a href="javascript:void(0);" onclick="confirmation('Weet je het zeker?','/app/proefdruk/admin/proefdruk/sendproof/<?php echo $proof->proof_id; ?>');">Versturen</a>
+<?php
+
+							}
+							?>
+
+
+
+
+
+
+
+							
+</td>
+						<td class="left">
+						<a class="btn-action glyphicons pencil btn-success" href="/app/proefdruk/admin/proefdruk/newproefdruk/<?php echo $proof->proof_id;?>">
+						<i></i>
+					
+						</a> 
+						
+						<a class="btn-action glyphicons remove_2 btn-danger" href="javascript:confirmation('Weet je het zeker?','/app/proefdruk/admin/proefdruk/list/<?php echo $proof->proof_id;?>?filter=<?php echo $filter;?>')">
+						<i></i>
+						</a>
+						</td>
+						<td align="left">
+						<input class="checkbox" type="checkbox" name="reminder[]" value="<?php echo $proof->proof_id;?>" style="margin-left:50px;">
+						</td>
+						</tr>
+					<?php endforeach;?>
+					<BR>
+					<input class="btn btn-icon btn-primary " type="submit" value="Reminder versturen">
+
+<BR><BR>
+					</form>
+					
+		
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<br/>	
